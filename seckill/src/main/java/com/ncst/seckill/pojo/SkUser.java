@@ -1,10 +1,9 @@
 package com.ncst.seckill.pojo;
 
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class SeckillUser implements Serializable {
+public class SkUser {
 
   private long id;
   private String nickname;
@@ -14,6 +13,7 @@ public class SeckillUser implements Serializable {
   private Date registerDate;
   private Date lastLoginDate;
   private long loginCount;
+
 
   public long getId() {
     return id;

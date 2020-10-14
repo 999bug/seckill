@@ -1,11 +1,168 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="73294c37-c362-4c37-89e5-0ff007cfab9e" name="Default Changelist" comment="" />
+    <list default="true" id="73294c37-c362-4c37-89e5-0ff007cfab9e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/controller/SecKillController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/mapper/GoodsMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/mapper/OrderMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/pojo/SkGoods.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/pojo/SkGoodsSeckill.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/pojo/SkOrder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/pojo/SkOrderInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/pojo/SkUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/service/IGoodsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/service/IOrderService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/service/ISecKillService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/service/impl/GoodsServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/service/impl/OrderServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/service/impl/SecKillServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/vo/GoodsVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/iphonex.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/meta10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/goods_detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/order_detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/secKill_fail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/MainApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/config/UserArgumentResolver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/config/WebConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/controller/GoodsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/controller/LoginController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/controller/MiaoshaController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/controller/SampleController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/dao/GoodsDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/dao/MiaoshaUserDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/dao/OrderDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/dao/UserDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/domain/Goods.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/domain/MiaoshaGoods.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/domain/MiaoshaOrder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/domain/MiaoshaUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/domain/OrderInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/domain/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/exception/GlobalException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/redis/BasePrefix.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/redis/KeyPrefix.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/redis/MiaoshaUserKey.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/redis/OrderKey.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/redis/RedisConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/redis/RedisPoolFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/redis/RedisService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/redis/UserKey.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/result/CodeMsg.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/result/Result.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/service/GoodsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/service/MiaoshaService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/service/MiaoshaUserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/service/OrderService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/service/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/util/MD5Util.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/util/UUIDUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/util/ValidatorUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/validator/IsMobile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/validator/IsMobileValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/vo/GoodsVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/imooc/miaosha/vo/LoginVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/css/bootstrap-theme.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/css/bootstrap-theme.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/css/bootstrap-theme.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/css/bootstrap-theme.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/css/bootstrap.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/css/bootstrap.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/css/bootstrap.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/css/bootstrap.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/fonts/glyphicons-halflings-regular.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/fonts/glyphicons-halflings-regular.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/fonts/glyphicons-halflings-regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/fonts/glyphicons-halflings-regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/fonts/glyphicons-halflings-regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/js/bootstrap.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/js/bootstrap.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/bootstrap/js/npm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/img/iphonex.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/img/meta10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/jquery-validation/additional-methods.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/jquery-validation/jquery.validate.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/jquery-validation/localization/messages_zh.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/js/common.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/js/jquery.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/js/md5.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/layer/layer.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/layer/mobile/layer.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/layer/mobile/need/layer.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/layer/skin/default/icon-ext.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/layer/skin/default/icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/layer/skin/default/layer.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/layer/skin/default/loading-0.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/layer/skin/default/loading-1.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/static/layer/skin/default/loading-2.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/templates/goods_detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/templates/goods_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/templates/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/templates/miaosha_fail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/templates/order_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seckill.iml" beforeDir="false" afterPath="$PROJECT_DIR$/seckill.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/controller/GoodsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/controller/GoodsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/pojo/SeckillUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/pojo/SeckillUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/result/CodeMsg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ncst/seckill/result/CodeMsg.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/goods_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/goods_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/hello.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/templates/hello.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ncst/seckill/controller/GoodsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ncst/seckill/controller/GoodsController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ncst/seckill/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ncst/seckill/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ncst/seckill/pojo/SeckillUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ncst/seckill/pojo/SeckillUser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ncst/seckill/result/CodeMsg.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ncst/seckill/result/CodeMsg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ncst/seckill/service/impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ncst/seckill/service/impl/UserServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/goods_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/goods_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/hello.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/login.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="seckill@192.168.194.131" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="seckill@192.168.194.131" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="seckill@192.168.194.131" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="seckill: schema" type="76f4a085:MysqlImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="seckill@192.168.194.131" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="seckill: schema" type="76f4a085:MysqlImplModel$Schema" />
+        <item name="sk_order_info: table" type="285a2a93:MysqlImplModel$Table" />
+      </path>
+    </expand>
+    <select />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -14,6 +171,9 @@
         <option value="Interface" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="JsFlowSettings">
     <service-enabled>true</service-enabled>
@@ -43,11 +203,16 @@
     <option name="jreName" value="1.8" />
   </component>
   <component name="ProjectId" id="1im140hC9181IkXDnJ7NKDcp4YQ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="autoscrollToSource" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DatabaseDriversLRU" value="mysql" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelOrder2" value="2" />
@@ -55,9 +220,10 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="RequestMappingsPanelWidth2" value="75" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="E:/Study/Java秒杀系统方案优化/s2gciy/miaosha_3" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2413793" />
@@ -69,8 +235,11 @@
       <recent name="com.ncst.seckill.redis" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\JAVA\springBoot\seckill\seckill\src\main\resources\templates" />
+      <recent name="G:\JAVA\springBoot\seckill\seckill\src\main\resources\static" />
+      <recent name="G:\JAVA\springBoot\seckill\seckill\src\test" />
+      <recent name="G:\JAVA\springBoot\seckill\seckill\src\test\java" />
       <recent name="E:\Study\Java秒杀系统方案优化\s2gciy\miaosha_2\src\main\resources\templates" />
-      <recent name="E:\Study\Java秒杀系统方案优化\s2gciy\miaosha_2\src\main\resources" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.MainApplication">
@@ -125,82 +294,111 @@
       <workItem from="1602634898228" duration="82000" />
       <workItem from="1602639500235" duration="6682000" />
       <workItem from="1602649153626" duration="39000" />
-      <workItem from="1602649210778" duration="1682000" />
+      <workItem from="1602649210778" duration="6637000" />
+      <workItem from="1602663658793" duration="5011000" />
+      <workItem from="1602671363462" duration="8503000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
   <component name="WindowStateProjectService">
+    <state x="532" y="78" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602660403082">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="532" y="78" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1602660403082" />
+    <state x="574" y="105" key="#com.intellij.ide.util.MemberChooser" timestamp="1602681927685">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="574" y="105" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1602681927685" />
     <state x="281" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1602650764036">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="281" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824@0.0.1536.824" timestamp="1602650764036" />
-    <state x="499" y="162" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1602641278583">
+    <state x="499" y="162" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1602671598251">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="499" y="162" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1602641278583" />
-    <state x="549" y="170" key="FileChooserDialogImpl" timestamp="1602648731791">
+    <state x="499" y="162" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1602671598251" />
+    <state x="385" y="6" key="CommitChangelistDialog2" timestamp="1602662122600">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="549" y="170" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1602648731791" />
-    <state width="1493" height="270" key="GridCell.Tab.0.bottom" timestamp="1602651023135">
+    <state x="385" y="6" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1602662122600" />
+    <state x="549" y="170" key="FileChooserDialogImpl" timestamp="1602680217154">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="270" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602651023135" />
-    <state width="1493" height="270" key="GridCell.Tab.0.center" timestamp="1602651023135">
+    <state x="549" y="170" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1602680217154" />
+    <state x="631" y="308" width="273" height="280" key="Github.ShareDialog" timestamp="1602651303629">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="270" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1602651023135" />
-    <state width="1493" height="270" key="GridCell.Tab.0.left" timestamp="1602651023134">
+    <state x="631" y="308" width="273" height="280" key="Github.ShareDialog/0.0.1536.824@0.0.1536.824" timestamp="1602651303629" />
+    <state width="1493" height="391" key="GridCell.Tab.0.bottom" timestamp="1602683026598">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="270" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1602651023134" />
-    <state width="1493" height="270" key="GridCell.Tab.0.right" timestamp="1602651023135">
+    <state width="1493" height="391" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602683026598" />
+    <state width="1493" height="391" key="GridCell.Tab.0.center" timestamp="1602683026598">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="270" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1602651023135" />
-    <state width="1493" height="270" key="GridCell.Tab.1.bottom" timestamp="1602651023135">
+    <state width="1493" height="391" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1602683026598" />
+    <state width="1493" height="391" key="GridCell.Tab.0.left" timestamp="1602683026598">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="270" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602651023135" />
-    <state width="1493" height="270" key="GridCell.Tab.1.center" timestamp="1602651023135">
+    <state width="1493" height="391" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1602683026598" />
+    <state width="1493" height="391" key="GridCell.Tab.0.right" timestamp="1602683026598">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="270" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1602651023135" />
-    <state width="1493" height="270" key="GridCell.Tab.1.left" timestamp="1602651023135">
+    <state width="1493" height="391" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1602683026598" />
+    <state width="1493" height="391" key="GridCell.Tab.1.bottom" timestamp="1602683026598">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="270" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1602651023135" />
-    <state width="1493" height="270" key="GridCell.Tab.1.right" timestamp="1602651023135">
+    <state width="1493" height="391" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602683026598" />
+    <state width="1493" height="391" key="GridCell.Tab.1.center" timestamp="1602683026598">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="270" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1602651023135" />
-    <state width="1493" height="261" key="GridCell.Tab.2.bottom" timestamp="1602649072537">
+    <state width="1493" height="391" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1602683026598" />
+    <state width="1493" height="391" key="GridCell.Tab.1.left" timestamp="1602683026598">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.2.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602649072537" />
-    <state width="1493" height="261" key="GridCell.Tab.2.center" timestamp="1602649072537">
+    <state width="1493" height="391" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1602683026598" />
+    <state width="1493" height="391" key="GridCell.Tab.1.right" timestamp="1602683026598">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.2.center/0.0.1536.824@0.0.1536.824" timestamp="1602649072537" />
-    <state width="1493" height="261" key="GridCell.Tab.2.left" timestamp="1602649072536">
+    <state width="1493" height="391" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1602683026598" />
+    <state width="1493" height="261" key="GridCell.Tab.2.bottom" timestamp="1602682329104">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.2.left/0.0.1536.824@0.0.1536.824" timestamp="1602649072536" />
-    <state width="1493" height="261" key="GridCell.Tab.2.right" timestamp="1602649072537">
+    <state width="1493" height="261" key="GridCell.Tab.2.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602682329104" />
+    <state width="1493" height="261" key="GridCell.Tab.2.center" timestamp="1602682329104">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.2.right/0.0.1536.824@0.0.1536.824" timestamp="1602649072537" />
+    <state width="1493" height="261" key="GridCell.Tab.2.center/0.0.1536.824@0.0.1536.824" timestamp="1602682329104" />
+    <state width="1493" height="261" key="GridCell.Tab.2.left" timestamp="1602682329103">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.2.left/0.0.1536.824@0.0.1536.824" timestamp="1602682329103" />
+    <state width="1493" height="261" key="GridCell.Tab.2.right" timestamp="1602682329104">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.2.right/0.0.1536.824@0.0.1536.824" timestamp="1602682329104" />
+    <state width="212" height="477" key="HiddenNamespacesPopup" timestamp="1602660202853">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="212" height="477" key="HiddenNamespacesPopup/0.0.1536.824@0.0.1536.824" timestamp="1602660202853" />
     <state x="249" y="0" key="SettingsEditor" timestamp="1602650970458">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="249" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1602650970458" />
-    <state x="461" y="240" key="com.intellij.ide.util.TipDialog" timestamp="1602634971663">
+    <state x="361" y="148" key="Vcs.Push.Dialog.v2" timestamp="1602651514629">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="461" y="240" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1602634971663" />
+    <state x="361" y="148" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1602651514629" />
+    <state x="461" y="240" key="com.intellij.ide.util.TipDialog" timestamp="1602671363477">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="461" y="240" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1602671363477" />
     <state x="499" y="183" key="extract.method.dialog" timestamp="1602640922817">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
