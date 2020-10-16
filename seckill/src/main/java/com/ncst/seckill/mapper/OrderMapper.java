@@ -24,4 +24,7 @@ public interface OrderMapper {
             + "#{userId}, #{goodsId}, #{goodsName}, #{goodsCount}, #{goodsPrice}, #{orderChannel},#{status},#{createDate} )")
     @SelectKey(keyColumn = "id", keyProperty = "id", resultType = long.class, before = false, statement = "select last_insert_id()")
     long insertOrderInfo(SkOrderInfo orderInfo);
+
+    @Select("select * from sk_order_info where id=#{orderId} ")
+    SkOrderInfo getOrderById(@Param("orderId") long orderId);
 }

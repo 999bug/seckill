@@ -53,4 +53,9 @@ public class OrderServiceImpl implements IOrderService {
         orderMapper.insert(skOrder);
         return orderInfo;
     }
+
+    @Override
+    public SkOrderInfo getOrderById(long orderId) {
+        return orderMapper.getOrderById(orderId);
+    }
 }
