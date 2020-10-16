@@ -9,9 +9,31 @@ import com.ncst.seckill.redis.KeyPrefix;
  */
 public interface IRedisService {
 
+    /**
+     *  获取对象
+     * @param prefix 前缀
+     * @param key key
+     * @param clazz 对象类型
+     * @param <T> 泛型
+     * @return 对象
+     */
     <T> T get(KeyPrefix prefix, String key, Class<T> clazz);
 
-    <T> boolean delete(KeyPrefix prefix, String key, T value);
+    /**
+     *  删除元素
+     * @param prefix 前缀
+     * @param key key
+     * @return 是否成功
+     */
+    boolean delete(KeyPrefix prefix, String key);
 
+    /**
+     *  设置对象
+     * @param prefix 前缀
+     * @param key key
+     * @param value 值
+     * @param <T>  泛型
+     * @return 是否成功
+     */
     <T> boolean set(KeyPrefix prefix, String key, T value);
 }

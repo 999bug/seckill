@@ -18,4 +18,13 @@ public interface IUserService {
 
     String login(HttpServletRequest request, HttpServletResponse response, LoginVo loginVo);
 
+    /**
+     *  更新密码
+     * @param token token
+     * @param id 用户 id
+     * @param password 用户密码 加密过的
+     * @return 是否更新成功
+     */
+    boolean updatePassword(String token, long id, String password);
+
 }

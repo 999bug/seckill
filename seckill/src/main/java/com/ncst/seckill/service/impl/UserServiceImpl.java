@@ -38,9 +38,39 @@ public class UserServiceImpl implements IUserService {
     RedisServiceImpl redisServiceImpl;
 
     public SeckillUser getById(long id) {
-        return userMapper.getById(id);
+        //取缓存
+        SeckillUser seckillUser = redisServiceImpl.get(MiaoshaUserKey.getById, "" + id, SeckillUser.class);
+        if (seckillUser != null) {
+            return seckillUser;
+        }
+        //取数据库
+        seckillUser = userMapper.getById(id);
+        if (seckillUser != null) {
+            redisServiceImpl.set(MiaoshaUserKey.getById, +id + "", seckillUser);
+        }
+        return seckillUser;
     }
 
+    @Override
+    public boolean updatePassword(String token, long id, String password) {
+        //取seckillUser
+        SeckillUser user = getById(id);
+        if (user == null) {
+            throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
+        }
+
+        //更新数据库 新创建一个user 的目的是为了减少数据库的 binlog 文件
+        SeckillUser seckillUser = new SeckillUser();
+        seckillUser.setId(id);
+        seckillUser.setPassword(Md5Utils.inputPassToDbPass(password, user.getSalt()));
+        userMapper.updateUser(seckillUser);
+
+        //更新缓存
+        redisServiceImpl.delete(MiaoshaUserKey.getById, "" + id);
+        user.setPassword(seckillUser.getPassword());
+        redisServiceImpl.set(MiaoshaUserKey.token, token, user);
+        return true;
+    }
 
     @Override
     public SeckillUser getByToken(HttpServletResponse response, String token) {
@@ -83,7 +113,7 @@ public class UserServiceImpl implements IUserService {
         seckillUser.setHead("nuu");
         seckillUser.setNickname("nick");
         System.out.println("=====" + seckillUser + "======");
-        userMapper.insertSeckill(seckillUser);
+        userMapper.insertSecKill(seckillUser);
     }
 
     @Override

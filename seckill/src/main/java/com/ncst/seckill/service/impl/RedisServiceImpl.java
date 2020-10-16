@@ -39,22 +39,18 @@ public class RedisServiceImpl implements IRedisService {
     }
 
     /**
-     * 删除对象
-     */
+     * 删除
+     * */
     @Override
-    public <T> boolean delete(KeyPrefix prefix, String key, T value) {
+    public boolean delete(KeyPrefix prefix, String key) {
         Jedis jedis = null;
         try {
-            jedis = jedisPool.getResource();
-            String str = JsonUtils.beanToString(value);
-            if (str == null || str.length() <= 0) {
-                return false;
-            }
+            jedis =  jedisPool.getResource();
             //生成真正的key
-            String realKey = prefix.getPrefix() + key;
-            jedis.del(realKey, str);
-            return true;
-        } finally {
+            String realKey  = prefix.getPrefix() + key;
+            long ret =  jedis.del(key);
+            return ret > 0;
+        }finally {
             returnToPool(jedis);
         }
     }

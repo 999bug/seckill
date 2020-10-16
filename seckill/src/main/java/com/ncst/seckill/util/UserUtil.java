@@ -20,7 +20,7 @@ import com.ncst.seckill.pojo.SeckillUser;
 
 public class UserUtil {
 	
-	private static void createUser(int count) throws Exception{
+	/*private static void createUser(int count) throws Exception{
 		List<SeckillUser> users = new ArrayList<>(count);
 		//生成用户
 		for(int i=0;i<count;i++) {
@@ -36,7 +36,7 @@ public class UserUtil {
 		}
 		System.out.println("create user");
 //		//插入数据库
-	/*	Connection conn = DBUtil.getConn();
+	*//*	Connection conn = DBUtil.getConn();
 		String sql = "insert into seckill_user(login_count, nickname,register_date,last_login_date,  salt, password, id)values(?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		for(int i=0;i<users.size();i++) {
@@ -53,7 +53,7 @@ public class UserUtil {
 		pstmt.executeBatch();
 		pstmt.close();
 		conn.close();
-		System.out.println("insert to db");*/
+		System.out.println("insert to db");*//*
 		//登录，生成token
 		String urlString = "http://localhost:8080/login/do_login";
 		File file = new File("D:/tokens.txt");
@@ -96,9 +96,9 @@ public class UserUtil {
 		raf.close();
 		
 		System.out.println("over");
-	}
+	}*/
 	
-	public static void main(String[] args)throws Exception {
-		createUser(5000);
-	}
+//	public static void main(String[] args)throws Exception {
+//		createUser(5000);
+//	}
 }

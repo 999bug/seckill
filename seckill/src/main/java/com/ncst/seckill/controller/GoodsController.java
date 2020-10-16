@@ -46,9 +46,13 @@ public class GoodsController {
     @Autowired
     ApplicationContext applicationContext;
 
+    /**
+     *  优化前        优化后
+     *  load 10.32   load 4.23
+     *  QPS  1626    3302
+     *  5000 10
+     */
 
-    //1626 QPS
-    //5000 10
     @RequestMapping(value = "/to_list", produces = "text/html")
     @ResponseBody
     public String list(HttpServletRequest request, HttpServletResponse response,

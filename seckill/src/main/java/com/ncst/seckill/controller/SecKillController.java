@@ -33,8 +33,9 @@ public class SecKillController {
     private ISecKillService secKillService;
 
     /*
-    QPS :178
-     5000 * 10
+    未优化      优化后
+    QPS :178    1570
+    5000 * 10
      */
 
     @RequestMapping("/do_secKill")
