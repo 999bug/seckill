@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface OrderMapper {
     @Select("select * from sk_order where user_id=#{userId} and goods_id=#{goodsId} ")
-    SeckillUser getSecKillOrderByUserIdAndGoodsId(@Param("userId") long userId, @Param("goodsId") long goodsId);
+    SkOrder getSecKillOrderByUserIdAndGoodsId(@Param("userId") long userId, @Param("goodsId") long goodsId);
 
     @Insert("insert into sk_order(user_id,order_id,goods_id)values(#{userId},#{orderId},#{goodsId}) ")
     int insert(SkOrder skOrder);

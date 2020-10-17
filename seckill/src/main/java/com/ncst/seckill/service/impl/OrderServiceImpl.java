@@ -4,7 +4,9 @@ import com.ncst.seckill.mapper.OrderMapper;
 import com.ncst.seckill.pojo.SeckillUser;
 import com.ncst.seckill.pojo.SkOrder;
 import com.ncst.seckill.pojo.SkOrderInfo;
+import com.ncst.seckill.redis.OrderKey;
 import com.ncst.seckill.service.IOrderService;
+import com.ncst.seckill.service.IRedisService;
 import com.ncst.seckill.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +23,14 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     private OrderMapper orderMapper;
 
+    @Autowired
+    private IRedisService redisService;
+
     @Override
-    public SeckillUser getSecKillOrderByUserIdAndGoodsId(long userId, long goodsId) {
-        return orderMapper.getSecKillOrderByUserIdAndGoodsId(userId, goodsId);
+    public SkOrder getSecKillOrderByUserIdAndGoodsId(long userId, long goodsId) {
+        //添加缓存层，提高访问效率
+        return redisService.get(OrderKey.getSecKillaOrderByUidGid, ""+userId+"_"+goodsId, SkOrder.class);
+      //  return orderMapper.getSecKillOrderByUserIdAndGoodsId(userId, goodsId);
     }
 
     @Override
@@ -51,6 +58,8 @@ public class OrderServiceImpl implements IOrderService {
 
         System.out.println(skOrder);
         orderMapper.insert(skOrder);
+        redisService.set(OrderKey.getSecKillaOrderByUidGid, ""+seckillUser.getId()+"_"+goodsVo.getId(), skOrder);
+
         return orderInfo;
     }
 

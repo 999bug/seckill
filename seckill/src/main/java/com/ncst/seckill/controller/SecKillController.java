@@ -1,6 +1,7 @@
 package com.ncst.seckill.controller;
 
 import com.ncst.seckill.pojo.SeckillUser;
+import com.ncst.seckill.pojo.SkOrder;
 import com.ncst.seckill.pojo.SkOrderInfo;
 import com.ncst.seckill.result.CodeMsg;
 import com.ncst.seckill.result.Result;
@@ -10,6 +11,7 @@ import com.ncst.seckill.service.ISecKillService;
 import com.ncst.seckill.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +35,8 @@ public class SecKillController {
     private ISecKillService secKillService;
 
     /*
-    未优化      优化后
-    QPS :178    1570
+    未优化      优化后    再次优化 判断是否秒杀加入缓存
+    QPS :178    1570     2430
     5000 * 10
      */
 
@@ -55,7 +57,7 @@ public class SecKillController {
         }
 
         //判断是否已经秒杀到了
-        SeckillUser order = orderService.getSecKillOrderByUserIdAndGoodsId(seckillUser.getId(), goodsId);
+        SkOrder order = orderService.getSecKillOrderByUserIdAndGoodsId(seckillUser.getId(), goodsId);
         if (order != null) {
             return Result.error(CodeMsg.REPEAT_SEC_KILL);
         }

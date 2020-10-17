@@ -26,6 +26,6 @@ public interface GoodsMapper {
     @Select("SELECT sg.*,skd.start_date,skd.end_date,skd.seckill_price,skd.stock_count from  sk_goods_seckill skd LEFT JOIN sk_goods sg ON skd.id=sg.id where sg.id=#{goodsId}")
     GoodsVo getGoodsVoByGoodsId(@Param("goodsId") long goodsId);
 
-    @Update("update sk_goods_seckill set stock_count=stock_count-1 where goods_id=#{goodsId}")
+    @Update("update sk_goods_seckill set stock_count=stock_count-1 where goods_id=#{goodsId} and stock_count>0")
     void reduceStock(SkGoodsSeckill goods);
 }
