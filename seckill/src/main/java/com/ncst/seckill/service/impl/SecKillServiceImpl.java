@@ -33,7 +33,7 @@ public class SecKillServiceImpl implements ISecKillService {
     private IRedisService redisService;
 
     @Override
-    @Transactional
+    @Transactional()
     public SkOrderInfo secKill(SeckillUser seckillUser, GoodsVo goodsVo) {
         //判断减库存是否成功
         boolean stock = goodsService.reduceStock(goodsVo);

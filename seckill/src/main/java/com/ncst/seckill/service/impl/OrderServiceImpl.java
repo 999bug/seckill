@@ -29,15 +29,14 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public SkOrder getSecKillOrderByUserIdAndGoodsId(long userId, long goodsId) {
         //添加缓存层，提高访问效率
-        return redisService.get(OrderKey.getSecKillaOrderByUidGid, ""+userId+"_"+goodsId, SkOrder.class);
-      //  return orderMapper.getSecKillOrderByUserIdAndGoodsId(userId, goodsId);
+        return redisService.get(OrderKey.getSecKillaOrderByUidGid, "" + userId + "_" + goodsId, SkOrder.class);
+        //  return orderMapper.getSecKillOrderByUserIdAndGoodsId(userId, goodsId);
     }
 
     @Override
     public SkOrderInfo insertOrder(SeckillUser seckillUser, GoodsVo goodsVo) {
-        SkOrderInfo orderInfo = new SkOrderInfo();
-
         //写入订单详细信息
+        SkOrderInfo orderInfo = new SkOrderInfo();
         orderInfo.setCreateDate(new Date());
         orderInfo.setDeliveryAddrId(0L);
         orderInfo.setGoodsCount(1);
@@ -47,8 +46,7 @@ public class OrderServiceImpl implements IOrderService {
         orderInfo.setOrderChannel(1);
         orderInfo.setStatus(0);
         orderInfo.setUserId(seckillUser.getId());
-
-        long l = orderMapper.insertOrderInfo(orderInfo);
+        orderMapper.insertOrderInfo(orderInfo);
 
         //写入秒杀订单信息
         SkOrder skOrder = new SkOrder();
@@ -58,8 +56,8 @@ public class OrderServiceImpl implements IOrderService {
 
         orderMapper.insert(skOrder);
         //添加缓存层，提高访问效率
-        redisService.set(OrderKey.getSecKillaOrderByUidGid, ""+seckillUser.getId()+"_"+goodsVo.getId(), skOrder);
-
+        redisService.set(OrderKey.getSecKillaOrderByUidGid,
+                "" + seckillUser.getId() + "_" + goodsVo.getId(), skOrder);
         return orderInfo;
     }
 
