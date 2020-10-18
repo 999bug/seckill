@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.ncst.seckill.mapper.UserMapper;
 import com.ncst.seckill.pojo.SeckillUser;
 import com.ncst.seckill.exception.GlobalException;
-import com.ncst.seckill.redis.MiaoshaUserKey;
+import com.ncst.seckill.redis.prefix.MiaoshaUserKey;
 import com.ncst.seckill.result.CodeMsg;
 import com.ncst.seckill.util.Md5Utils;
 import com.ncst.seckill.util.UUIDUtil;

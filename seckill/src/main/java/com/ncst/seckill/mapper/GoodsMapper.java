@@ -27,5 +27,8 @@ public interface GoodsMapper {
     GoodsVo getGoodsVoByGoodsId(@Param("goodsId") long goodsId);
 
     @Update("update sk_goods_seckill set stock_count=stock_count-1 where goods_id=#{goodsId} and stock_count>0")
-    void reduceStock(SkGoodsSeckill goods);
+    int reduceStock(SkGoodsSeckill goods);
+
+    @Update("update  sk_goods_seckill set stock_count = #{stockCount} where goods_id = #{goodsId}")
+    void resetStock(SkGoodsSeckill g);
 }

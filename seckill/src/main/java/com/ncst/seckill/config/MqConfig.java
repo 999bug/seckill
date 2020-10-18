@@ -14,7 +14,11 @@ import java.util.Map;
  */
 @Configuration
 public class MqConfig {
+    /**
+     * Direct 模型
+     */
     public static final String DIRECT_QUEUE = "direct_queue";
+    public static final String SECKILL_DIRECT_QUEUE = "secKill.queue";
     /**
      * Topic 模型
      */
@@ -41,6 +45,11 @@ public class MqConfig {
     @Bean
     public Queue directQueue() {
         return new Queue(DIRECT_QUEUE, true);
+    }
+
+    @Bean
+    public Queue secKillQueue(){
+        return new Queue(SECKILL_DIRECT_QUEUE,true);
     }
 
     /**
@@ -102,7 +111,7 @@ public class MqConfig {
     }
     @Bean
     public Binding headerBinding(){
-        Map<String,Object> map=new HashMap<>();
+        Map<String,Object> map=new HashMap<String,Object>();
         map.put("header1", "value1");
         map.put("header2", "value2");
         //全部满足时 才可以通信

@@ -1,4 +1,6 @@
-package com.ncst.seckill.redis;
+package com.ncst.seckill.redis.prefix;
+
+import com.ncst.seckill.redis.BasePrefix;
 
 public class OrderKey extends BasePrefix {
 

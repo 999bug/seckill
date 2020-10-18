@@ -16,4 +16,7 @@ public interface IOrderService {
     SkOrderInfo insertOrder(SeckillUser seckillUser, GoodsVo goodsVo);
 
     SkOrderInfo getOrderById(long orderId);
+
+    void deleteOrders();
+
 }

@@ -4,7 +4,7 @@ import com.ncst.seckill.mapper.OrderMapper;
 import com.ncst.seckill.pojo.SeckillUser;
 import com.ncst.seckill.pojo.SkOrder;
 import com.ncst.seckill.pojo.SkOrderInfo;
-import com.ncst.seckill.redis.OrderKey;
+import com.ncst.seckill.redis.prefix.OrderKey;
 import com.ncst.seckill.service.IOrderService;
 import com.ncst.seckill.service.IRedisService;
 import com.ncst.seckill.vo.GoodsVo;
@@ -48,16 +48,16 @@ public class OrderServiceImpl implements IOrderService {
         orderInfo.setStatus(0);
         orderInfo.setUserId(seckillUser.getId());
 
-        long returnOrderId = orderMapper.insertOrderInfo(orderInfo);
+        long l = orderMapper.insertOrderInfo(orderInfo);
 
         //写入秒杀订单信息
         SkOrder skOrder = new SkOrder();
         skOrder.setGoodsId(goodsVo.getId());
-        skOrder.setOrderId(returnOrderId);
+        skOrder.setOrderId(orderInfo.getId());
         skOrder.setUserId(seckillUser.getId());
 
-        System.out.println(skOrder);
         orderMapper.insert(skOrder);
+        //添加缓存层，提高访问效率
         redisService.set(OrderKey.getSecKillaOrderByUidGid, ""+seckillUser.getId()+"_"+goodsVo.getId(), skOrder);
 
         return orderInfo;
@@ -66,5 +66,11 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public SkOrderInfo getOrderById(long orderId) {
         return orderMapper.getOrderById(orderId);
+    }
+
+    @Override
+    public void deleteOrders() {
+        orderMapper.deleteOrders();
+        orderMapper.deleteMiaoshaOrders();
     }
 }

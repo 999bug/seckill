@@ -1,21 +1,28 @@
 package com.ncst.seckill.controller;
 
+import com.ncst.seckill.pojo.SecKillMsg;
 import com.ncst.seckill.pojo.SeckillUser;
 import com.ncst.seckill.pojo.SkOrder;
 import com.ncst.seckill.pojo.SkOrderInfo;
+import com.ncst.seckill.redis.prefix.GoodsKey;
+import com.ncst.seckill.redis.prefix.OrderKey;
+import com.ncst.seckill.redis.prefix.SecKillKey;
 import com.ncst.seckill.result.CodeMsg;
 import com.ncst.seckill.result.Result;
-import com.ncst.seckill.service.IGoodsService;
-import com.ncst.seckill.service.IOrderService;
-import com.ncst.seckill.service.ISecKillService;
+import com.ncst.seckill.service.*;
 import com.ncst.seckill.vo.GoodsVo;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.util.ResourcePool;
 
 import javax.jws.WebParam;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Date 2020/10/14 19:48
@@ -24,7 +31,7 @@ import javax.jws.WebParam;
  */
 @RestController
 @RequestMapping("/secKill")
-public class SecKillController {
+public class SecKillController implements InitializingBean {
     @Autowired
     private IGoodsService goodsService;
 
@@ -34,25 +41,58 @@ public class SecKillController {
     @Autowired
     private ISecKillService secKillService;
 
+    @Autowired
+    private IRedisService redisService;
+
+    @Autowired
+    private IMqSenderService senderService;
+
+    private Map<Long, Boolean> map = new HashMap<Long, Boolean>();
+
+    /**
+     * 系统初始化
+     *
+     */
+    @Override
+    public void afterPropertiesSet() {
+        List<GoodsVo> goodsList = goodsService.listGoodsVo();
+        if (goodsList == null) {
+            return;
+        }
+        for (GoodsVo goodsVo : goodsList) {
+            redisService.set(GoodsKey.getGoodsStock, "" + goodsVo.getId(), goodsVo.getStockCount());
+            //内存标记，减少redis访问
+            map.put(goodsVo.getId(), false);
+        }
+    }
+
     /*
     未优化      优化后    再次优化 判断是否秒杀加入缓存
-    QPS :178    1570     2430
+    QPS :178    1570     2430   1060  2033  1853  2161
+    负载                                    10.02  8.58
     5000 * 10
      */
 
     @PostMapping("/do_secKill")
-    public Result<SkOrderInfo> doSecKill(Model model, SeckillUser seckillUser,
-                            @RequestParam("goodsId") long goodsId) {
+    public Result<Integer> doSecKill(Model model, SeckillUser seckillUser,
+                                     @RequestParam("goodsId") long goodsId) {
         //判断是否登录
         model.addAttribute("user", seckillUser);
         if (seckillUser == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
 
-        //判断库存
-        GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);
-        int stockCount = goods.getStockCount();
-        if (stockCount <= 0) {
+        //判断是否秒杀
+        Boolean goodsEmpty = map.get(goodsId);
+        if (goodsEmpty) {
+            return Result.error(CodeMsg.SECKILL_OVER);
+        }
+
+        //预减库存
+        Long stock = redisService.decr(GoodsKey.getGoodsStock, "" + goodsId);
+        //由库存 1 减一 得到的 stock
+        if (stock < 0) {
+            map.put(goodsId, true);
             return Result.error(CodeMsg.SECKILL_OVER);
         }
 
@@ -62,8 +102,45 @@ public class SecKillController {
             return Result.error(CodeMsg.REPEAT_SEC_KILL);
         }
 
-        //减库存 下订单 写入秒杀订单
-        SkOrderInfo orderInfo = secKillService.secKill(seckillUser, goods);
-        return Result.success(orderInfo);
+        //入队
+        SecKillMsg secKillMsg = new SecKillMsg();
+        secKillMsg.setSeckillUser(seckillUser);
+        secKillMsg.setGoodsId(goodsId);
+        senderService.sendSecKill(secKillMsg);
+        //排队中
+        return Result.success(0);
     }
+
+    /**
+     * orderId：成功
+     * -1：秒杀失败
+     * 0： 排队中
+     * */
+    @GetMapping("/result")
+    public Result<Long> result(Model model, SeckillUser user,
+                               @RequestParam("goodsId") long goodsId) {
+        model.addAttribute("user", user);
+        if (user == null) {
+            return Result.error(CodeMsg.SESSION_ERROR);
+        }
+        long result = secKillService.getSecKillResult(user.getId(), goodsId);
+        return Result.success(result);
+    }
+
+    @GetMapping(value="/reset")
+    public Result<Boolean> reset(Model model) {
+        List<GoodsVo> goodsList = goodsService.listGoodsVo();
+        for(GoodsVo goods : goodsList) {
+            goods.setStockCount(10);
+            redisService.set(GoodsKey.getGoodsStock, ""+goods.getId(), 10);
+            map.put(goods.getId(), false);
+        }
+        redisService.delete(OrderKey.getSecKillaOrderByUidGid);
+        redisService.delete(SecKillKey.getGoodsEmpty);
+        secKillService.reset(goodsList);
+        return Result.success(true);
+    }
+
+
+
 }

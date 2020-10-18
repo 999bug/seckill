@@ -34,37 +34,47 @@ public class GoodsServiceImpl implements IGoodsService {
 
     @Override
     public int[] getSeckillStatusAndRemainSeconds(GoodsVo goods) {
-        int[] arr=new int[2];
+        int[] arr = new int[2];
         long startTime = goods.getStartDate().getTime();
         long endTime = goods.getEndDate().getTime();
         long now = System.currentTimeMillis();
 
         //表示秒杀状态 0：未开始 1：进行中 2：已经结束
-        int seckillStatus=0;
+        int seckillStatus = 0;
         //表示剩余时间，在秒杀未开始之前
-        int remainSeconds=0;
+        int remainSeconds = 0;
 
         //秒杀还未开始
-        if (now<startTime){
-            remainSeconds=(int)((startTime-now)/1000);
-        }else if (now>endTime){
+        if (now < startTime) {
+            remainSeconds = (int) ((startTime - now) / 1000);
+        } else if (now > endTime) {
             //秒杀已经结束
-            seckillStatus=2;
-            remainSeconds=-1;
-        }else {
+            seckillStatus = 2;
+            remainSeconds = -1;
+        } else {
             //秒杀进行中
-            seckillStatus=1;
+            seckillStatus = 1;
         }
-        arr[0]=seckillStatus;
-        arr[1]=remainSeconds;
+        arr[0] = seckillStatus;
+        arr[1] = remainSeconds;
         return arr;
     }
 
     @Override
-    public void reduceStock(GoodsVo goodsVo) {
-        SkGoodsSeckill goods=new SkGoodsSeckill();
+    public boolean reduceStock(GoodsVo goodsVo) {
+        SkGoodsSeckill goods = new SkGoodsSeckill();
         goods.setGoodsId(goodsVo.getId());
-        goodsMapper.reduceStock(goods);
+        return goodsMapper.reduceStock(goods) > 0;
+    }
+
+    @Override
+    public void resetStock(List<GoodsVo> goodsList) {
+        for(GoodsVo goods : goodsList ) {
+             SkGoodsSeckill g = new SkGoodsSeckill();
+            g.setGoodsId(goods.getId());
+            g.setStockCount(goods.getStockCount());
+            goodsMapper.resetStock(g);
+        }
     }
 
 }

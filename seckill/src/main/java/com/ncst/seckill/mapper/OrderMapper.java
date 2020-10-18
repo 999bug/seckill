@@ -27,4 +27,10 @@ public interface OrderMapper {
 
     @Select("select * from sk_order_info where id=#{orderId} ")
     SkOrderInfo getOrderById(@Param("orderId") long orderId);
+
+    @Delete("delete from sk_order_info")
+     void deleteOrders();
+
+    @Delete("delete from sk_order")
+     void deleteMiaoshaOrders();
 }

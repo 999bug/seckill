@@ -1,7 +1,7 @@
 package com.ncst.seckill.controller;
 
 import com.ncst.seckill.pojo.SeckillUser;
-import com.ncst.seckill.redis.GoodsKey;
+import com.ncst.seckill.redis.prefix.GoodsKey;
 import com.ncst.seckill.result.Result;
 import com.ncst.seckill.service.IGoodsService;
 import com.ncst.seckill.service.impl.RedisServiceImpl;

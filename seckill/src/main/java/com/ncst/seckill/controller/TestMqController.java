@@ -1,6 +1,7 @@
-package com.ncst.seckill.rabbitmq;
+package com.ncst.seckill.controller;
 
 import com.ncst.seckill.result.Result;
+import com.ncst.seckill.service.impl.MqSenderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestMqController {
 
     @Autowired
-    private MQSender sender;
+    private MqSenderServiceImpl sender;
 
     @RequestMapping("/direct")
     public Result<String> directMq() {

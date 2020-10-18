@@ -1,6 +1,8 @@
-package com.ncst.seckill.rabbitmq;
+package com.ncst.seckill.service.impl;
 
 import com.ncst.seckill.config.MqConfig;
+import com.ncst.seckill.pojo.SecKillMsg;
+import com.ncst.seckill.service.IMqSenderService;
 import com.ncst.seckill.util.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,26 +12,30 @@ import org.springframework.amqp.core.MessageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author LSY
+ */
 @Service
-public class MQSender {
+public class MqSenderServiceImpl  implements IMqSenderService {
 
-    private static Logger log = LoggerFactory.getLogger(MQSender.class);
+    private static Logger log = LoggerFactory.getLogger(MqSenderServiceImpl.class);
 
     @Autowired
     AmqpTemplate amqpTemplate;
 
-//	public void sendMiaoshaMessage(MiaoshaMessage mm) {
-//		String msg = RedisService.beanToString(mm);
-//		log.info("send message:"+msg);
-//		amqpTemplate.convertAndSend(MQConfig.MIAOSHA_QUEUE, msg);
-//	}
+    @Override
+    public void sendSecKill(SecKillMsg message) {
+        String msg = getString(message);
+        amqpTemplate.convertAndSend(MqConfig.SECKILL_DIRECT_QUEUE,msg);
+    }
 
-
+    @Override
     public void sendDirect(Object message) {
 		String msg = getString(message);
 		amqpTemplate.convertAndSend(MqConfig.DIRECT_QUEUE, msg);
     }
 
+    @Override
     public void sendTopic(Object message){
 		String msg = getString(message);
 		//输出到TOPIC_ROUTING_KEY1  "topic.key1"
@@ -42,11 +48,13 @@ public class MQSender {
 		amqpTemplate.convertAndSend(MqConfig.TOPIC_EXCHANGE,"topic.kDemo",msg+"kDemo");
 	}
 
-	public void sendFanout(Object message){
+	@Override
+    public void sendFanout(Object message){
         String msg = getString(message);
         amqpTemplate.convertAndSend(MqConfig.FANOUT_EXCHANGE,"",msg);
     }
 
+    @Override
     public void sendHeader(Object message){
         String msg = getString(message);
         MessageProperties properties=new MessageProperties();

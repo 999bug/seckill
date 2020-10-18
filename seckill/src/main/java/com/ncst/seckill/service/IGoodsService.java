@@ -17,5 +17,7 @@ public interface IGoodsService {
 
     int[] getSeckillStatusAndRemainSeconds(GoodsVo goods);
 
-    void reduceStock(GoodsVo goodsVo);
+    boolean reduceStock(GoodsVo goodsVo);
+
+    void resetStock(List<GoodsVo> goodsList);
 }

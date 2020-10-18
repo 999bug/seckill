@@ -55,6 +55,20 @@ public class RedisServiceImpl implements IRedisService {
         }
     }
 
+    @Override
+    public boolean delete(KeyPrefix prefix) {
+        Jedis jedis = null;
+        try {
+            jedis =  jedisPool.getResource();
+            //生成真正的key
+            String realKey  = prefix.getPrefix() ;
+            long ret =  jedis.del(realKey);
+            return ret > 0;
+        }finally {
+            returnToPool(jedis);
+        }
+    }
+
 
     /**
      * 设置对象
@@ -78,6 +92,38 @@ public class RedisServiceImpl implements IRedisService {
             }
             return true;
         } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /**
+     * 判断key是否存在
+     * */
+    @Override
+    public <T> boolean exists(KeyPrefix prefix, String key) {
+        Jedis jedis = null;
+        try {
+            jedis =  jedisPool.getResource();
+            //生成真正的key
+            String realKey  = prefix.getPrefix() + key;
+            return  jedis.exists(realKey);
+        }finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /**
+     * 减少值
+     * */
+    @Override
+    public <T> Long decr(KeyPrefix prefix, String key) {
+        Jedis jedis = null;
+        try {
+            jedis =  jedisPool.getResource();
+            //生成真正的key
+            String realKey  = prefix.getPrefix() + key;
+            return  jedis.decr(realKey);
+        }finally {
             returnToPool(jedis);
         }
     }
