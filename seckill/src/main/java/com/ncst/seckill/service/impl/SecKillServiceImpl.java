@@ -3,6 +3,7 @@ package com.ncst.seckill.service.impl;
 import com.ncst.seckill.pojo.SeckillUser;
 import com.ncst.seckill.pojo.SkOrder;
 import com.ncst.seckill.pojo.SkOrderInfo;
+import com.ncst.seckill.pojo.Verify;
 import com.ncst.seckill.redis.prefix.SecKillKey;
 import com.ncst.seckill.service.IGoodsService;
 import com.ncst.seckill.service.IOrderService;
@@ -10,11 +11,13 @@ import com.ncst.seckill.service.IRedisService;
 import com.ncst.seckill.service.ISecKillService;
 import com.ncst.seckill.util.Md5Utils;
 import com.ncst.seckill.util.UUIDUtil;
+import com.ncst.seckill.util.VerifyUtils;
 import com.ncst.seckill.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 /**
@@ -80,18 +83,43 @@ public class SecKillServiceImpl implements ISecKillService {
             return null;
         }
         String path = Md5Utils.md5(UUIDUtil.uuid() + "2223@$%#%%!!~~~``···2");
-        redisService.set(SecKillKey.getSecKillPath,""+user.getId()+"_"+goodsId,path);
+        redisService.set(SecKillKey.getSecKillPath, "" + user.getId() + "_" + goodsId, path);
         return path;
     }
 
     @Override
     public boolean checkPath(SeckillUser seckillUser, long goodsId, String path) {
-        if (seckillUser==null|| path==null){
+        if (seckillUser == null || path == null) {
             return false;
         }
         String oldPath = redisService.get(SecKillKey.getSecKillPath, "" + seckillUser.getId() + "_" + goodsId, String.class);
-        return  path.equals(oldPath);
+        return path.equals(oldPath);
     }
+
+    @Override
+    public BufferedImage createVerifyCode(SeckillUser user, long goodsId) {
+        Verify verifyCode = VerifyUtils.createVerifyCode(user, goodsId);
+        //把验证码存入缓存
+        redisService.set(SecKillKey.getMiaoshaVerifyCode, user.getId() + "," + goodsId, verifyCode.getCalc());
+        return verifyCode.getBufferedImage();
+    }
+
+    @Override
+    public boolean checkVerifyCode(SeckillUser user, long goodsId, int verifyCode) {
+        if (user == null || goodsId <= 0) {
+            return false;
+        }
+
+        //从缓存中取出验证码
+        Integer codeOld = redisService.get(SecKillKey.getMiaoshaVerifyCode, user.getId() + "," + goodsId, Integer.class);
+        if (codeOld == null || codeOld - verifyCode != 0) {
+            return false;
+        }
+        //删除验证码
+        redisService.delete(SecKillKey.getMiaoshaVerifyCode, user.getId() + "," + goodsId);
+        return true;
+    }
+
 
     private void setGoodsEmpty(long id) {
         redisService.set(SecKillKey.getGoodsEmpty, "" + id, true);

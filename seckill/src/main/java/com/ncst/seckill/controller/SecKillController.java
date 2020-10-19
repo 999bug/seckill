@@ -21,7 +21,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.ResourcePool;
 
+import javax.imageio.ImageIO;
 import javax.jws.WebParam;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,14 +139,40 @@ public class SecKillController implements InitializingBean {
 
     @GetMapping("/path")
     public Result<String> getPath(Model model, SeckillUser user,
-                                  @RequestParam("goodsId") long goodsId) {
+                                  @RequestParam("goodsId") long goodsId,
+                                  @RequestParam(value="verifyCode")int verifyCode) {
         model.addAttribute("user", user);
         if (user == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
+        //验证验证码是否正确
+        boolean check = secKillService.checkVerifyCode(user, goodsId, verifyCode);
+        if(!check) {
+            return Result.error(CodeMsg.REQUEST_ILLEGAL);
+        }
+
+        //生成随机地址
         String path = secKillService.creatPath(user, goodsId);
         return Result.success(path);
+    }
 
+    @GetMapping(value="/verifyCode")
+    public Result<String> getMiaoshaVerifyCod(HttpServletResponse response, SeckillUser user,
+                                              @RequestParam("goodsId")long goodsId) {
+        if(user == null) {
+            return Result.error(CodeMsg.SESSION_ERROR);
+        }
+        try {
+            BufferedImage image  = secKillService.createVerifyCode(user, goodsId);
+            OutputStream out = response.getOutputStream();
+            ImageIO.write(image, "JPEG", out);
+            out.flush();
+            out.close();
+            return null;
+        }catch(Exception e) {
+            e.printStackTrace();
+            return Result.error(CodeMsg.SECKILL_FAIL);
+        }
     }
 
     @GetMapping(value = "/reset")

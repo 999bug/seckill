@@ -4,6 +4,7 @@ import com.ncst.seckill.pojo.SeckillUser;
 import com.ncst.seckill.pojo.SkOrderInfo;
 import com.ncst.seckill.vo.GoodsVo;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 /**
@@ -21,4 +22,9 @@ public interface ISecKillService {
     String creatPath(SeckillUser user, long goodsId);
 
     boolean checkPath(SeckillUser seckillUser, long goodsId, String path);
+
+    BufferedImage createVerifyCode(SeckillUser user, long goodsId);
+
+    boolean checkVerifyCode(SeckillUser user, long goodsId, int verifyCode);
+
 }
