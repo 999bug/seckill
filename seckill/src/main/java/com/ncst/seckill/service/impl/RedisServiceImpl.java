@@ -1,10 +1,8 @@
 package com.ncst.seckill.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.ncst.seckill.redis.KeyPrefix;
+import com.ncst.seckill.key.KeyPrefix;
 import com.ncst.seckill.service.IRedisService;
 import com.ncst.seckill.util.JsonUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;

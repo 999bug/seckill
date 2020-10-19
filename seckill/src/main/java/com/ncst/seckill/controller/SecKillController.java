@@ -3,26 +3,18 @@ package com.ncst.seckill.controller;
 import com.ncst.seckill.pojo.SecKillMsg;
 import com.ncst.seckill.pojo.SeckillUser;
 import com.ncst.seckill.pojo.SkOrder;
-import com.ncst.seckill.pojo.SkOrderInfo;
-import com.ncst.seckill.redis.prefix.GoodsKey;
-import com.ncst.seckill.redis.prefix.OrderKey;
-import com.ncst.seckill.redis.prefix.SecKillKey;
+import com.ncst.seckill.key.prefix.GoodsKey;
+import com.ncst.seckill.key.prefix.OrderKey;
+import com.ncst.seckill.key.prefix.SecKillKey;
 import com.ncst.seckill.result.CodeMsg;
 import com.ncst.seckill.result.Result;
 import com.ncst.seckill.service.*;
-import com.ncst.seckill.util.Md5Utils;
-import com.ncst.seckill.util.UUIDUtil;
 import com.ncst.seckill.vo.GoodsVo;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.util.ResourcePool;
 
 import javax.imageio.ImageIO;
-import javax.jws.WebParam;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.OutputStream;
@@ -79,11 +71,11 @@ public class SecKillController implements InitializingBean {
      */
 
     @PostMapping("/{path}/do_secKill")
-    public Result<Integer> doSecKill(Model model, SeckillUser seckillUser,
+    public Result<Integer> doSecKill( SeckillUser seckillUser,
                                      @RequestParam("goodsId") long goodsId,
                                      @PathVariable("path") String path) {
         //判断是否登录
-        model.addAttribute("user", seckillUser);
+
         if (seckillUser == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
@@ -127,9 +119,9 @@ public class SecKillController implements InitializingBean {
      * 0： 排队中
      */
     @GetMapping("/result")
-    public Result<Long> result(Model model, SeckillUser user,
+    public Result<Long> result( SeckillUser user,
                                @RequestParam("goodsId") long goodsId) {
-        model.addAttribute("user", user);
+
         if (user == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
@@ -138,10 +130,9 @@ public class SecKillController implements InitializingBean {
     }
 
     @GetMapping("/path")
-    public Result<String> getPath(Model model, SeckillUser user,
+    public Result<String> getPath(SeckillUser user,
                                   @RequestParam("goodsId") long goodsId,
                                   @RequestParam(value="verifyCode")int verifyCode) {
-        model.addAttribute("user", user);
         if (user == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
@@ -176,7 +167,7 @@ public class SecKillController implements InitializingBean {
     }
 
     @GetMapping(value = "/reset")
-    public Result<Boolean> reset(Model model) {
+    public Result<Boolean> reset() {
         List<GoodsVo> goodsList = goodsService.listGoodsVo();
         for (GoodsVo goods : goodsList) {
             goods.setStockCount(10);

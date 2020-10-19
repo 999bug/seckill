@@ -4,7 +4,7 @@ import com.ncst.seckill.pojo.SeckillUser;
 import com.ncst.seckill.pojo.SkOrder;
 import com.ncst.seckill.pojo.SkOrderInfo;
 import com.ncst.seckill.pojo.Verify;
-import com.ncst.seckill.redis.prefix.SecKillKey;
+import com.ncst.seckill.key.prefix.SecKillKey;
 import com.ncst.seckill.service.IGoodsService;
 import com.ncst.seckill.service.IOrderService;
 import com.ncst.seckill.service.IRedisService;

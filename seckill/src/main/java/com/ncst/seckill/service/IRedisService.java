@@ -1,6 +1,6 @@
 package com.ncst.seckill.service;
 
-import com.ncst.seckill.redis.KeyPrefix;
+import com.ncst.seckill.key.KeyPrefix;
 
 /**
  * @Date 2020/10/14 12:46

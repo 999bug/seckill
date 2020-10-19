@@ -1,7 +1,7 @@
 package com.ncst.seckill.controller;
 
 import com.ncst.seckill.pojo.SeckillUser;
-import com.ncst.seckill.redis.prefix.GoodsKey;
+import com.ncst.seckill.key.prefix.GoodsKey;
 import com.ncst.seckill.result.Result;
 import com.ncst.seckill.service.IGoodsService;
 import com.ncst.seckill.service.impl.RedisServiceImpl;
@@ -10,13 +10,10 @@ import com.ncst.seckill.vo.GoodsVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.ncst.seckill.service.impl.UserServiceImpl;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.spring4.context.SpringWebContext;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 
@@ -29,7 +26,7 @@ import java.util.List;
  * @Author by LSY
  * @Description 商品页面
  */
-@Controller
+@RestController
 @RequestMapping("/goods")
 public class GoodsController {
 
@@ -55,8 +52,7 @@ public class GoodsController {
      * 5000 10
      */
 
-    @RequestMapping(value = "/to_list", produces = "text/html")
-    @ResponseBody
+    @GetMapping(value = "/to_list", produces = "text/html")
     public String list(HttpServletRequest request, HttpServletResponse response,
                        Model model, SeckillUser user) {
         model.addAttribute("user", user);
@@ -77,8 +73,7 @@ public class GoodsController {
         return html;
     }
 
-    @RequestMapping("/detail/{goodsId}")
-    @ResponseBody
+    @GetMapping("/detail/{goodsId}")
     public Result<GoodsDetailVo> detail(SeckillUser seckillUser, @PathVariable("goodsId") long goodsId) {
         GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);
         int[] arr = goodsService.getSeckillStatusAndRemainSeconds(goods);
@@ -91,12 +86,9 @@ public class GoodsController {
         return Result.success(detailVo);
     }
 
-    @RequestMapping(value = "/to_detail/{goodsId}", produces = "text/html")
-    @ResponseBody
+    @GetMapping(value = "/to_detail/{goodsId}", produces = "text/html")
     public String detail2(HttpServletRequest request, HttpServletResponse response,
-                          Model model, SeckillUser seckillUser, @PathVariable("goodsId") long goodsId) {
-        model.addAttribute("user", seckillUser);
-
+                          Model model, @PathVariable("goodsId") long goodsId) {
         //取缓存
         String html = redisServiceImpl.get(GoodsKey.getGoodsDetail, "" + goodsId, String.class);
         if (!StringUtils.isEmpty(html)) {

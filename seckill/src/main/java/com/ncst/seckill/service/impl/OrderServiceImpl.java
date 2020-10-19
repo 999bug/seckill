@@ -4,7 +4,7 @@ import com.ncst.seckill.mapper.OrderMapper;
 import com.ncst.seckill.pojo.SeckillUser;
 import com.ncst.seckill.pojo.SkOrder;
 import com.ncst.seckill.pojo.SkOrderInfo;
-import com.ncst.seckill.redis.prefix.OrderKey;
+import com.ncst.seckill.key.prefix.OrderKey;
 import com.ncst.seckill.service.IOrderService;
 import com.ncst.seckill.service.IRedisService;
 import com.ncst.seckill.vo.GoodsVo;

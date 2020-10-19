@@ -10,13 +10,9 @@ import com.ncst.seckill.service.IOrderService;
 import com.ncst.seckill.vo.GoodsVo;
 import com.ncst.seckill.vo.OrderDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/order")
 public class OrderController {
 
@@ -27,8 +23,7 @@ public class OrderController {
 	@Autowired
 	IGoodsService goodsService;
 	
-    @RequestMapping("/detail")
-    @ResponseBody
+    @GetMapping("/detail")
     public Result<OrderDetailVo> info( SeckillUser user,
 									  @RequestParam("orderId") long orderId) {
     	if(user == null) {

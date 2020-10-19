@@ -1,4 +1,4 @@
-package com.ncst.seckill.redis;
+package com.ncst.seckill.key;
 
 import com.ncst.seckill.config.RedisConfig;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -13,8 +13,7 @@
         <version>1.5.8.RELEASE</version>
     </parent>
 
-    <name>miaosha_2</name>
-    <url>http://maven.apache.org</url>
+    <name>secKill</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -74,7 +73,6 @@
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

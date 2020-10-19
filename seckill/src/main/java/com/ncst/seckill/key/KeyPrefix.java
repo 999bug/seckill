@@ -1,4 +1,4 @@
-package com.ncst.seckill.redis;
+package com.ncst.seckill.key;
 
 /**
  * @Date 2020/10/14 12:30

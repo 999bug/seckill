@@ -1,6 +1,6 @@
-package com.ncst.seckill.redis.prefix;
+package com.ncst.seckill.key.prefix;
 
-import com.ncst.seckill.redis.BasePrefix;
+import com.ncst.seckill.key.BasePrefix;
 
 public class GoodsKey extends BasePrefix {
 

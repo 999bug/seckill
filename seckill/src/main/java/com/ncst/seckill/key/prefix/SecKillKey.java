@@ -1,7 +1,6 @@
-package com.ncst.seckill.redis.prefix;
+package com.ncst.seckill.key.prefix;
 
-import com.ncst.seckill.redis.BasePrefix;
-import com.ncst.seckill.redis.KeyPrefix;
+import com.ncst.seckill.key.BasePrefix;
 
 /**
  * @Date 2020/10/18 9:59

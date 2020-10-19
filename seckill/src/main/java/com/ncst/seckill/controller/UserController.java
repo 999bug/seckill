@@ -10,12 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.ncst.seckill.result.Result;
 import com.ncst.seckill.service.impl.UserServiceImpl;
 import com.ncst.seckill.vo.LoginVo;
+import org.springframework.web.servlet.ModelAndView;
+
 /**
  * @Date 2020/10/14 12:30
  * @Author by LSY
@@ -33,19 +34,21 @@ public class UserController {
 	@Autowired
     RedisServiceImpl redisServiceImpl;
 	
-    @RequestMapping("/to_login")
-    public String toLogin() {
+    @GetMapping("/to_login")
+    public String toLogin( ) {
         return "login";
     }
     
-    @RequestMapping("/do_login")
+    @PostMapping("/do_login")
     @ResponseBody
-    public Result<String> doLogin(HttpServletRequest request,HttpServletResponse response, @Valid LoginVo loginVo) {
+    public Result<String> doLogin(HttpServletRequest request,HttpServletResponse response,
+                                  @Valid LoginVo loginVo) {
     	log.info(loginVo.toString());
     	//登录
         String token = userServiceImpl.login(request,response, loginVo);
         return Result.success(token);
     }
+
     /*@RequestMapping("/to_regist")
     public String toRegist() {
         return "regist";
