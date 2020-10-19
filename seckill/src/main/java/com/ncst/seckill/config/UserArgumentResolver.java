@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ncst.seckill.access.UserContext;
+import com.ncst.seckill.controller.UserController;
 import com.ncst.seckill.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.ncst.seckill.pojo.SeckillUser;
 import com.ncst.seckill.service.impl.UserServiceImpl;
+
+import java.lang.reflect.Method;
 
 /**
  * @Date 2020/10/14 12:30

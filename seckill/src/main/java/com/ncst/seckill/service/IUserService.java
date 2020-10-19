@@ -1,5 +1,6 @@
 package com.ncst.seckill.service;
 
+import com.ncst.seckill.vo.RegistVo;
 import com.ncst.seckill.pojo.SeckillUser;
 import com.ncst.seckill.vo.LoginVo;
 
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public interface IUserService {
     SeckillUser getByToken(HttpServletResponse response, String token);
 
-    void insertSeckill(SeckillUser seckillUser);
+    void insertSeckill(RegistVo registVo);
 
     String login(HttpServletRequest request, HttpServletResponse response, LoginVo loginVo);
 

@@ -78,4 +78,18 @@ public class SeckillUser implements Serializable {
   public void setLoginCount(int loginCount) {
     this.loginCount = loginCount;
   }
+
+  @Override
+  public String toString() {
+    return "SeckillUser{" +
+            "id=" + id +
+            ", nickname='" + nickname + '\'' +
+            ", password='" + password + '\'' +
+            ", salt='" + salt + '\'' +
+            ", head='" + head + '\'' +
+            ", registerDate=" + registerDate +
+            ", lastLoginDate=" + lastLoginDate +
+            ", loginCount=" + loginCount +
+            '}';
+  }
 }

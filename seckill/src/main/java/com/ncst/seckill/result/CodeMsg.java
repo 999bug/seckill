@@ -43,6 +43,13 @@ public class CodeMsg {
 	public static CodeMsg REPEAT_SEC_KILL = new CodeMsg(500501, "不能重复秒杀");
 	public static CodeMsg SECKILL_FAIL = new CodeMsg(500502, "秒杀失败");
 
+	/**
+	 * 注册模块 5006XX
+	 */
+	public static CodeMsg REGIST_ERROR = new CodeMsg(500601, "注册失败");
+	public static CodeMsg ID_already_exists = new CodeMsg(500601, "Id已经存在");
+
+
 
 	private CodeMsg( ) {
 	}

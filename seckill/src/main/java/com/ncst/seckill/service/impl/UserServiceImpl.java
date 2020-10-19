@@ -4,6 +4,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ncst.seckill.vo.RegistVo;
 import com.ncst.seckill.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,24 +88,26 @@ public class UserServiceImpl implements IUserService {
 
 
     @Override
-    public void insertSeckill(SeckillUser seckillUser) {
+    public void insertSeckill(RegistVo registVo) {
         //输入为空检查
-//		if (seckillUser == null) {
-//			throw new GlobalException(CodeMsg.REGIST_ERROR);
-//		}
-//		SeckillUser dbUser = miaoshaUserDao.getById(seckillUser.getId());
+		if (registVo == null) {
+			throw new GlobalException(CodeMsg.REGIST_ERROR);
+		}
+		SeckillUser dbUser = userMapper.getById(registVo.getId());
 
         //防止重复注册
-//		if (dbUser != null && seckillUser.getId().equals(dbUser.getId())) {
-//			throw new GlobalException(CodeMsg.ID_already_exists);
-//		}
+		if (dbUser != null && registVo.getId()==dbUser.getId()) {
+			throw new GlobalException(CodeMsg.ID_already_exists);
+		}
 
         //对密码进行二次加密
-        String password = seckillUser.getPassword();
+        String password = registVo.getPassword();
         String salt = UUIDUtil.uuid();
         String dbPwd = Md5Utils.fromInputPwdToDbPwd(password, salt);
 
         //设置其他值进行数据库
+        SeckillUser seckillUser=new SeckillUser();
+        seckillUser.setId(registVo.getId());
         seckillUser.setPassword(dbPwd);
         seckillUser.setSalt(salt);
         seckillUser.setLoginCount(1);
