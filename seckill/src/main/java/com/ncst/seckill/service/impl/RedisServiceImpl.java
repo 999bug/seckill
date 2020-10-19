@@ -53,6 +53,22 @@ public class RedisServiceImpl implements IRedisService {
         }
     }
 
+    /**
+     * 增加值
+     * */
+    @Override
+    public <T> Long incr(KeyPrefix prefix, String key) {
+        Jedis jedis = null;
+        try {
+            jedis =  jedisPool.getResource();
+            //生成真正的key
+            String realKey  = prefix.getPrefix() + key;
+            return  jedis.incr(realKey);
+        }finally {
+            returnToPool(jedis);
+        }
+    }
+
     @Override
     public boolean delete(KeyPrefix prefix) {
         Jedis jedis = null;

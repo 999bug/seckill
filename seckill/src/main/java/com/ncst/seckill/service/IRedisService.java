@@ -28,6 +28,7 @@ public interface IRedisService {
      * @return 是否成功
      */
     boolean delete(KeyPrefix prefix, String key);
+
     boolean delete(KeyPrefix prefix);
 
     /**
@@ -40,6 +41,8 @@ public interface IRedisService {
      * @return 是否成功
      */
     <T> boolean set(KeyPrefix prefix, String key, T value);
+
+    <T> Long incr(KeyPrefix prefix, String key);
 
     <T> Long decr(KeyPrefix prefix, String key);
 

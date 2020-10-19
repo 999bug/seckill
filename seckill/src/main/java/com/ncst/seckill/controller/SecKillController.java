@@ -1,5 +1,6 @@
 package com.ncst.seckill.controller;
 
+import com.ncst.seckill.access.AccessLimit;
 import com.ncst.seckill.pojo.SecKillMsg;
 import com.ncst.seckill.pojo.SeckillUser;
 import com.ncst.seckill.pojo.SkOrder;
@@ -70,12 +71,12 @@ public class SecKillController implements InitializingBean {
     5000 * 10
      */
 
+
     @PostMapping("/{path}/do_secKill")
     public Result<Integer> doSecKill( SeckillUser seckillUser,
                                      @RequestParam("goodsId") long goodsId,
                                      @PathVariable("path") String path) {
         //判断是否登录
-
         if (seckillUser == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
@@ -128,7 +129,7 @@ public class SecKillController implements InitializingBean {
         long result = secKillService.getSecKillResult(user.getId(), goodsId);
         return Result.success(result);
     }
-
+    @AccessLimit(seconds = 5,maxCount = 5,needLogin = true)
     @GetMapping("/path")
     public Result<String> getPath(SeckillUser user,
                                   @RequestParam("goodsId") long goodsId,
