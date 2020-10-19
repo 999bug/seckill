@@ -10,6 +10,8 @@ import com.ncst.seckill.redis.prefix.SecKillKey;
 import com.ncst.seckill.result.CodeMsg;
 import com.ncst.seckill.result.Result;
 import com.ncst.seckill.service.*;
+import com.ncst.seckill.util.Md5Utils;
+import com.ncst.seckill.util.UUIDUtil;
 import com.ncst.seckill.vo.GoodsVo;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +53,6 @@ public class SecKillController implements InitializingBean {
 
     /**
      * 系统初始化
-     *
      */
     @Override
     public void afterPropertiesSet() {
@@ -73,16 +74,21 @@ public class SecKillController implements InitializingBean {
     5000 * 10
      */
 
-    @PostMapping("/do_secKill")
+    @PostMapping("/{path}/do_secKill")
     public Result<Integer> doSecKill(Model model, SeckillUser seckillUser,
-                                     @RequestParam("goodsId") long goodsId) {
+                                     @RequestParam("goodsId") long goodsId,
+                                     @PathVariable("path") String path) {
         //判断是否登录
         model.addAttribute("user", seckillUser);
         if (seckillUser == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
-
-        //判断是否秒杀
+        //验证Path
+        boolean check = secKillService.checkPath(seckillUser, goodsId, path);
+        if (!check){
+            return Result.error(CodeMsg.REQUEST_ILLEGAL);
+        }
+        //内存标记，减少redis访问  判断是否秒杀
         Boolean goodsEmpty = map.get(goodsId);
         if (goodsEmpty) {
             return Result.error(CodeMsg.SECKILL_OVER);
@@ -115,7 +121,7 @@ public class SecKillController implements InitializingBean {
      * orderId：成功
      * -1：秒杀失败
      * 0： 排队中
-     * */
+     */
     @GetMapping("/result")
     public Result<Long> result(Model model, SeckillUser user,
                                @RequestParam("goodsId") long goodsId) {
@@ -127,12 +133,24 @@ public class SecKillController implements InitializingBean {
         return Result.success(result);
     }
 
-    @GetMapping(value="/reset")
+    @GetMapping("/path")
+    public Result<String> getPath(Model model, SeckillUser user,
+                                  @RequestParam("goodsId") long goodsId) {
+        model.addAttribute("user", user);
+        if (user == null) {
+            return Result.error(CodeMsg.SESSION_ERROR);
+        }
+        String path = secKillService.creatPath(user, goodsId);
+        return Result.success(path);
+
+    }
+
+    @GetMapping(value = "/reset")
     public Result<Boolean> reset(Model model) {
         List<GoodsVo> goodsList = goodsService.listGoodsVo();
-        for(GoodsVo goods : goodsList) {
+        for (GoodsVo goods : goodsList) {
             goods.setStockCount(10);
-            redisService.set(GoodsKey.getGoodsStock, ""+goods.getId(), 10);
+            redisService.set(GoodsKey.getGoodsStock, "" + goods.getId(), 10);
             map.put(goods.getId(), false);
         }
         redisService.delete(OrderKey.getSecKillaOrderByUidGid);
@@ -140,7 +158,6 @@ public class SecKillController implements InitializingBean {
         secKillService.reset(goodsList);
         return Result.success(true);
     }
-
 
 
 }

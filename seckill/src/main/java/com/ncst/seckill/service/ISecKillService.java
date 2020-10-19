@@ -17,4 +17,8 @@ public interface ISecKillService {
     long getSecKillResult(long id, long goodsId);
 
     void reset(List<GoodsVo> goodsList);
+
+    String creatPath(SeckillUser user, long goodsId);
+
+    boolean checkPath(SeckillUser seckillUser, long goodsId, String path);
 }

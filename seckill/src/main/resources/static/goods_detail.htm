@@ -43,7 +43,7 @@
                 <span id="miaoshaTip"></span>
             </td>
             <td>
-                <button class="btn btn-primary btn-block" type="button" id="buyButton" onclick="doMiaosha()">立即秒杀
+                <button class="btn btn-primary btn-block" type="button" id="buyButton" onclick="getMiaoshaPath()">立即秒杀
                 </button>
                 <input type="hidden" name="goodsId" id="goodsId"/>
             </td>
@@ -64,6 +64,7 @@
 </div>
 </body>
 <script>
+
     function getMiaoshaResult(goodsId) {
         g_showLoading();
         $.ajax({
@@ -99,10 +100,32 @@
             }
         });
     }
-
-    function doMiaosha() {
+    function getMiaoshaPath(){
+        var goodsId = $("#goodsId").val();
+        g_showLoading();
         $.ajax({
-            url: "/secKill/do_secKill",
+            url:"/secKill/path",
+            type:"GET",
+            data:{
+                goodsId:goodsId,
+                //verifyCode:$("#verifyCode").val()
+            },
+            success:function(data){
+                if(data.code == 0){
+                    var path = data.data;
+                    doMiaosha(path);
+                }else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(){
+                layer.msg("客户端请求有误");
+            }
+        });
+    }
+    function doMiaosha(path) {
+        $.ajax({
+            url: "/secKill/"+path+"/do_secKill",
             type: "POST",
             data: {
                 goodsId: $("#goodsId").val(),

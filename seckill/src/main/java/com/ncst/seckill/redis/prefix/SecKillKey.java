@@ -8,9 +8,10 @@ import com.ncst.seckill.redis.BasePrefix;
  * @Description
  */
 public class SecKillKey extends BasePrefix {
-    public SecKillKey(String prefix) {
-        super(prefix);
+    private SecKillKey(int expireSeconds,String prefix) {
+        super(expireSeconds,prefix);
     }
 
-    public static  SecKillKey getGoodsEmpty=new SecKillKey("ge");
+    public static  SecKillKey getGoodsEmpty=new SecKillKey(0,"ge");
+    public static  SecKillKey getSecKillPath=new SecKillKey(0,"skp");
 }

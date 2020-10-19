@@ -8,6 +8,8 @@ import com.ncst.seckill.service.IGoodsService;
 import com.ncst.seckill.service.IOrderService;
 import com.ncst.seckill.service.IRedisService;
 import com.ncst.seckill.service.ISecKillService;
+import com.ncst.seckill.util.Md5Utils;
+import com.ncst.seckill.util.UUIDUtil;
 import com.ncst.seckill.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +72,25 @@ public class SecKillServiceImpl implements ISecKillService {
     public void reset(List<GoodsVo> goodsList) {
         goodsService.resetStock(goodsList);
         orderService.deleteOrders();
+    }
+
+    @Override
+    public String creatPath(SeckillUser user, long goodsId) {
+        if (user == null || goodsId <= 0) {
+            return null;
+        }
+        String path = Md5Utils.md5(UUIDUtil.uuid() + "2223@$%#%%!!~~~``···2");
+        redisService.set(SecKillKey.getSecKillPath,""+user.getId()+"_"+goodsId,path);
+        return path;
+    }
+
+    @Override
+    public boolean checkPath(SeckillUser seckillUser, long goodsId, String path) {
+        if (seckillUser==null|| path==null){
+            return false;
+        }
+        String oldPath = redisService.get(SecKillKey.getSecKillPath, "" + seckillUser.getId() + "_" + goodsId, String.class);
+        return  path.equals(oldPath);
     }
 
     private void setGoodsEmpty(long id) {

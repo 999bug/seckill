@@ -4,7 +4,7 @@ import com.ncst.seckill.redis.BasePrefix;
 
 public class OrderKey extends BasePrefix {
 
-	public OrderKey(String prefix) {
+	private OrderKey(String prefix) {
 		super(prefix);
 	}
 
