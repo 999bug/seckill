@@ -12,6 +12,7 @@ import com.ncst.seckill.service.IRedisService;
 import com.ncst.seckill.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -82,16 +83,20 @@ public class OrderServiceImpl implements IOrderService {
         orderMapper.deleteMiaoshaOrders();
     }
 
-    @Override
-    public boolean update(long uid) {
-        orderMapper.update(uid);
-        return true;
-    }
+
 
     @Override
     public long getOrderPayStatus(long uid) {
         SkOrderInfo orderById = orderMapper.getOrderByUid(uid);
         return orderById.getStatus();
 
+    }
+
+    @Override
+    @Transactional()
+    public boolean pay(long uid) {
+
+        orderMapper.update(uid);
+        return true;
     }
 }

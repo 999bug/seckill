@@ -21,5 +21,6 @@ public interface IOrderService {
 
     long getOrderPayStatus(long uid);
 
-    boolean update(long uid);
+    boolean pay(long uid);
+
 }

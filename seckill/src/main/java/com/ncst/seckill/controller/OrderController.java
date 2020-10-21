@@ -56,7 +56,7 @@ public class OrderController {
         if (user == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
-        boolean status = orderService.update(uid);
+        boolean status= orderService.pay(uid);
         return Result.success(status);
     }
 

@@ -25,9 +25,7 @@
     <div class="panel-body">
         <span id="userTip"> <br/></span>
     </div>
-    <div class="panel-body">
-        <span id="addressTip"><br/></span>
-    </div>
+
     <table class="table" id="goodslist">
         <tr>
             <td>商品名称</td>
@@ -71,12 +69,9 @@
         </tr>
     </table>
 
-
-    <!--接收前端传的值-->
-    <input type="hidden" id="sk_address">
+    <!--接收后端传的值-->
     <input type="hidden" id="sk_user">
-    <span type="hidden" id="sk_from_address"></span>
-    <span type="hidden" id="sk_uid"></span>
+
 </div>
 </body>
 
@@ -92,6 +87,7 @@
      * 渲染页面
      */
     function getDetail() {
+        // 获取上一个页面 url 传来的参数
         var goodsId = g_getQueryString("goodsId");
         $.ajax({
             url: "/goods/detail/" + goodsId,
@@ -114,7 +110,6 @@
      * @param detail
      */
     function render(detail) {
-        var miaoshaStatus = detail.miaoshaStatus;
         var remainSeconds = detail.remainSeconds;
         var goods = detail.goods;
         var user = detail.user;
@@ -126,14 +121,11 @@
             $("#userTip").text("您还没有登录，请登陆后再操作");
 
         }
+        //把用户的id 存入隐藏域
         $("#sk_user").text(user.id);
 
 
-        if (address) {
-            $("#addressTip").text(address.address);
-        } else {
-            $("#addressTip").text("没有收货地址的提示!!。。。");
-        }
+
 
         $("#goodsName").text(goods.goodsName);
         $("#goodsImg").attr("src", goods.goodsImg);
@@ -184,7 +176,7 @@
     }
 
     /*
-    * 获取地址
+    * 获取收获地址
     * */
     function getAddress() {
         var user_id = $("#sk_user").text();
@@ -197,7 +189,7 @@
             success: function (data) {
                 if (data.data == 0) {
                     hasAddress();
-                }else {
+                } else {
                     getMiaoshaPath();
                 }
             },
@@ -221,8 +213,6 @@
                 success: function (data) {
                     var add = data.data;
                     if (data.code == 0) {
-                        $("#sk_from_address").text(true);
-                        $("#addressTip").text(add.address);
                         if (data.data != null) {
                             getMiaoshaPath();
                         }
@@ -238,7 +228,6 @@
             layer.closeAll();
         }
     }
-
 
     /**
      * 获得秒杀地址（随机）
