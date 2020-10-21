@@ -3,9 +3,7 @@ package com.ncst.seckill.pojo;
 
 import lombok.Getter;
 import lombok.Setter;
-import tk.mybatis.mapper.annotation.KeySql;
 
-import javax.persistence.Id;
 import java.util.Date;
 
 /**
@@ -18,8 +16,7 @@ public class SkAddress {
   /**
    * 收件地址 id  主键
    */
-  @Id
-  @KeySql(useGeneratedKeys = true)
+
   private long aid;
   /**
    * 用户id

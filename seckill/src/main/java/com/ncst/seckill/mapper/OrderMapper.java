@@ -32,4 +32,10 @@ public interface OrderMapper {
 
     @Delete("delete from sk_order")
      void deleteMiaoshaOrders();
+
+    @Select("select * from sk_order_info where user_id=#{uid} ")
+    SkOrderInfo getOrderByUid(@Param("uid")long uid);
+
+    @Update("update sk_order_info set status=2 where user_id=#{uid}")
+    void update(long uid);
 }

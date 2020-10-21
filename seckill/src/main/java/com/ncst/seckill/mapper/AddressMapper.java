@@ -2,6 +2,7 @@ package com.ncst.seckill.mapper;
 
 import com.ncst.seckill.pojo.SkAddress;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
  * @Description
  */
 @Repository
+@Mapper
 public interface AddressMapper{
 
     @Select("select * from sk_address  where uid=#{ids}")

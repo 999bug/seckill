@@ -34,6 +34,7 @@ public class CodeMsg {
 	 * 订单模块 5004XX
 	 */
 	public static CodeMsg ORDER_NOT_EXIST = new CodeMsg(500400, "订单不存在");
+	public static CodeMsg ADDRESS_NULL = new CodeMsg(500401, "地址不存在");
 
 
 	/**

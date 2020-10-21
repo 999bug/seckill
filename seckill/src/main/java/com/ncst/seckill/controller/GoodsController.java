@@ -3,6 +3,7 @@ package com.ncst.seckill.controller;
 import com.ncst.seckill.pojo.SkAddress;
 import com.ncst.seckill.pojo.SkUser;
 import com.ncst.seckill.key.prefix.GoodsKey;
+import com.ncst.seckill.result.CodeMsg;
 import com.ncst.seckill.result.Result;
 import com.ncst.seckill.service.IGoodsService;
 import com.ncst.seckill.service.impl.RedisServiceImpl;
@@ -130,9 +131,13 @@ public class GoodsController {
     }
 
     @GetMapping(value = "/address")
-    public Result<SkAddress> getAddress(long id) {
+    public Result<Integer> getAddress(long id) {
         SkAddress skAddress = goodsService.getAddressBySkUserId(id);
-        return Result.success(skAddress);
+       if (skAddress==null){
+           return Result.success(0);
+       }else {
+           return Result.success(1);
+       }
     }
 
 

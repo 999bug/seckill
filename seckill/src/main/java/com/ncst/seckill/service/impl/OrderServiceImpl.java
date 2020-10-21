@@ -81,4 +81,17 @@ public class OrderServiceImpl implements IOrderService {
         orderMapper.deleteOrders();
         orderMapper.deleteMiaoshaOrders();
     }
+
+    @Override
+    public boolean update(long uid) {
+        orderMapper.update(uid);
+        return true;
+    }
+
+    @Override
+    public long getOrderPayStatus(long uid) {
+        SkOrderInfo orderById = orderMapper.getOrderByUid(uid);
+        return orderById.getStatus();
+
+    }
 }

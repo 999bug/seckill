@@ -18,36 +18,56 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
 
-	@Autowired
-	IOrderService orderService;
-	
-	@Autowired
-	IGoodsService goodsService;
-	
+    @Autowired
+    IOrderService orderService;
+
+    @Autowired
+    IGoodsService goodsService;
+
     @GetMapping("/detail")
-    public Result<OrderDetailVo> info( SkUser user,
-									  @RequestParam("orderId") long orderId) {
-    	if(user == null) {
-    		return Result.error(CodeMsg.SESSION_ERROR);
-    	}
+    public Result<OrderDetailVo> info(SkUser user,
+                                      @RequestParam("orderId") long orderId) {
+        if (user == null) {
+            return Result.error(CodeMsg.SESSION_ERROR);
+        }
 
-    	//获取订单详情
-		SkOrderInfo order = orderService.getOrderById(orderId);
-		if(order == null) {
-    		return Result.error(CodeMsg.ORDER_NOT_EXIST);
-    	}
+        //获取订单详情
+        SkOrderInfo order = orderService.getOrderById(orderId);
+        if (order == null) {
+            return Result.error(CodeMsg.ORDER_NOT_EXIST);
+        }
 
-		//获取商品详情
-		GoodsVo goods = goodsService.getGoodsVoByGoodsId(order.getGoodsId());
+        //获取商品详情
+        GoodsVo goods = goodsService.getGoodsVoByGoodsId(order.getGoodsId());
 
-		//获取收件人地址 姓名
-		SkAddress address = goodsService.getAddressBySkUserId(order.getUserId());
+        //获取收件人地址 姓名
+        SkAddress address = goodsService.getAddressBySkUserId(order.getUserId());
 
-		OrderDetailVo vo = new OrderDetailVo();
-    	vo.setOrder(order);
-    	vo.setGoods(goods);
-    	vo.setAddress(address);
-    	return Result.success(vo);
+        OrderDetailVo vo = new OrderDetailVo();
+        vo.setOrder(order);
+        vo.setGoods(goods);
+        vo.setAddress(address);
+        return Result.success(vo);
     }
-    
+
+    @PostMapping("/pay")
+    public Result<Boolean> pay(SkUser user,
+                               @RequestParam("uid") long uid) {
+        if (user == null) {
+            return Result.error(CodeMsg.SESSION_ERROR);
+        }
+        boolean status = orderService.update(uid);
+        return Result.success(status);
+    }
+
+    @GetMapping("/payStatus")
+    public Result<Long> payStatus(SkUser user,
+                                  @RequestParam("uid") long uid) {
+        if (user == null) {
+            return Result.error(CodeMsg.SESSION_ERROR);
+        }
+        long orderPayStatus = orderService.getOrderPayStatus(uid);
+        return Result.success(orderPayStatus);
+    }
+
 }

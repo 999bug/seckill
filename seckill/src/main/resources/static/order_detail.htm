@@ -43,47 +43,27 @@
             <td id="orderStatus">
             </td>
             <td>
-                <button class="btn btn-primary btn-block" type="submit" id="payButton">立即支付</button>
+                <button class="btn btn-primary btn-block" type="submit" id="payButton" onclick="pay()">立即支付</button>
             </td>
         </tr>
         <tr>
             <td>收货人</td>
-            <td colspan="2"><span id="user_name"></span><span id ="user_phone"></span></td>
+            <td colspan="2"><span id="user_name"></span><span id="user_phone"></span></td>
         </tr>
         <tr>
             <td>收货地址</td>
             <td colspan="2"><span id="address"></span></td>
         </tr>
     </table>
+    <!--uid-->
+    <input type="hidden" id="sk_order">
 </div>
 </body>
 </html>
 <script>
-    function render(detail) {
-        var goods = detail.goods;
-        var order = detail.order;
-        var address = detail.address;
-        $("#goodsName").text(goods.goodsName);
-        $("#goodsImg").attr("src", goods.goodsImg);
-        $("#orderPrice").text(order.goodsPrice);
-        $("#createDate").text(new Date(order.createDate).format("yyyy-MM-dd hh:mm:ss"));
-        var status = "";
-        if (order.status == 0) {
-            status = "未支付"
-        } else if (order.status == 1) {
-            status = "待发货";
-        }
-
-        $("#orderStatus").text(status);
-        $("#address").text(address.address);
-        $("#user_name").text(address.nickname);
-        $("#user_phone").text(address.phone);
-
-    }
-
     $(function () {
         getOrderDetail();
-    })
+    });
 
     function getOrderDetail() {
         var orderId = g_getQueryString("orderId");
@@ -104,6 +84,72 @@
                 layer.msg("客户端请求有误");
             }
         });
+    }
+
+    function getPayStatus() {
+        var uid = $("#sk_order").text();
+        $.ajax({
+            url: "/order/payStatus",
+            type: "GET",
+            data: {
+                uid: uid
+            },
+            success: function (data) {
+                return data.data;
+            },
+            error: function () {
+                layer.msg("客户端请求有误");
+            }
+        });
+    }
+
+    function pay() {
+        var uid = $("#sk_order").text();
+        $.ajax({
+            url: "/order/pay",
+            type: "POST",
+            data: {
+                uid: uid
+            },
+            success: function (data) {
+                getOrderDetail();
+            },
+            error: function () {
+                layer.msg("客户端请求有误");
+            }
+        });
+    }
+
+    function render(detail) {
+        var goods = detail.goods;
+        var order = detail.order;
+        var address = detail.address;
+
+        $("#sk_order").text(order.userId);
+
+        $("#goodsName").text(goods.goodsName);
+        $("#goodsImg").attr("src", goods.goodsImg);
+        $("#orderPrice").text(order.goodsPrice);
+        $("#createDate").text(new Date(order.createDate).format("yyyy-MM-dd hh:mm:ss"));
+
+
+        $("#address").text(address.address);
+        $("#user_name").text(address.nickname);
+        $("#user_phone").text(address.phone);
+
+        //设置支付状态
+        var a = order.status;
+        var status = "";
+        if (a == 0) {
+            status = "未支付"
+        } else if (a == 1) {
+            status = "待发货";
+            $("#payButton").hide();
+        } else {
+            status = "已支付";
+            $("#payButton").hide();
+        }
+        $("#orderStatus").text(status);
     }
 
 

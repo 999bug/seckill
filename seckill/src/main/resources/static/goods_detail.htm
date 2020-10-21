@@ -50,7 +50,7 @@
                         <img id="verifyCodeImg" width="80" height="32" style="display:none"
                              onclick="refreshVerifyCode()"/>
                         <input id="verifyCode" class="form-control" style="display:none"/>
-                        <button class="btn btn-primary" type="button" id="buyButton" onclick="getMiaoshaPath()">立即秒杀
+                        <button class="btn btn-primary" type="button" id="buyButton" onclick="getAddress()">立即秒杀
                         </button>
                     </div>
                 </div>
@@ -76,6 +76,7 @@
     <input type="hidden" id="sk_address">
     <input type="hidden" id="sk_user">
     <span type="hidden" id="sk_from_address"></span>
+    <span type="hidden" id="sk_uid"></span>
 </div>
 </body>
 
@@ -126,16 +127,14 @@
 
         }
         $("#sk_user").text(user.id);
-        getAddress(user.id);
+
 
         if (address) {
             $("#addressTip").text(address.address);
         } else {
             $("#addressTip").text("没有收货地址的提示!!。。。");
         }
-        // if ($("#sk_from_address").text()==11||address){
-        //     $("#addressTip").hide()
-        // }
+
         $("#goodsName").text(goods.goodsName);
         $("#goodsImg").attr("src", goods.goodsImg);
         $("#startTime").text(new Date(goods.startDate).format("yyyy-MM-dd hh:mm:ss"));
@@ -187,60 +186,56 @@
     /*
     * 获取地址
     * */
-    function getAddress(id) {
+    function getAddress() {
+        var user_id = $("#sk_user").text();
         $.ajax({
             url: "/goods/address",
             type: "GET",
             data: {
-                id: id
+                id: user_id
             },
             success: function (data) {
-                if (data.data == null) {
-                    $("#sk_address").text(0);
+                if (data.data == 0) {
+                    hasAddress();
+                }else {
+                    getMiaoshaPath();
                 }
             },
             error: function () {
                 layer.msg("客户端请求有误");
+                return false;
             }
         });
-    }
-
-    function disp_confirm() {
-        var user_id = $("#sk_user").text();
-        var statuc_addr = $("#sk_from_address").text();
-        if (!statuc_addr) {
-            var r = confirm("订单地址为空，请输入订单地址");
-            if (r == true) {
-                $.ajax({
-                    url: "/goods/insertAddress?uid=" + user_id,
-                    type: "GET",
-                    success: function (data) {
-                       var add= data.data;
-                        if (data.code == 0) {
-                            $("#sk_from_address").text(true);
-                            $("#addressTip").text(add.address);
-                        } else {
-                            layer.msg(data.msg);
-                        }
-                    },
-                    error: function () {
-                        layer.msg("客户端请求有误");
-                    }
-                })
-            } else {
-                getDetail();
-            }
-        }
-
     }
 
     /**
      * 添加校验是否有收件地址 使用隐藏域
      */
     function hasAddress() {
-        var address = $("#sk_address").text();
-        if (address == 0) {
-            disp_confirm();
+        var user_id = $("#sk_user").text();
+        var r = confirm("订单地址为空，请输入订单地址");
+        if (r == true) {
+            $.ajax({
+                url: "/goods/insertAddress?uid=" + user_id,
+                type: "GET",
+                success: function (data) {
+                    var add = data.data;
+                    if (data.code == 0) {
+                        $("#sk_from_address").text(true);
+                        $("#addressTip").text(add.address);
+                        if (data.data != null) {
+                            getMiaoshaPath();
+                        }
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                },
+                error: function () {
+                    layer.msg("客户端请求有误");
+                }
+            })
+        } else {
+            layer.closeAll();
         }
     }
 
@@ -249,34 +244,27 @@
      * 获得秒杀地址（随机）
      */
     function getMiaoshaPath() {
-        hasAddress();
-        var stat = $("#sk_from_address").text();
-
-        if (stat) {
-            var goodsId = $("#goodsId").val();
-            g_showLoading();
-            $.ajax({
-                url: "/secKill/path",
-                type: "GET",
-                data: {
-                    goodsId: goodsId,
-                    verifyCode: $("#verifyCode").val()
-                },
-                success: function (data) {
-                    if (data.code == 0) {
-                        var path = data.data;
-                        doMiaosha(path);
-                    } else {
-                        layer.msg(data.msg);
-                    }
-                },
-                error: function () {
-                    layer.msg("客户端请求有误");
+        var goodsId = $("#goodsId").val();
+        g_showLoading();
+        $.ajax({
+            url: "/secKill/path",
+            type: "GET",
+            data: {
+                goodsId: goodsId,
+                verifyCode: $("#verifyCode").val()
+            },
+            success: function (data) {
+                if (data.code == 0) {
+                    var path = data.data;
+                    doMiaosha(path);
+                } else {
+                    layer.msg(data.msg);
                 }
-            });
-
-        }
-
+            },
+            error: function () {
+                layer.msg("客户端请求有误");
+            }
+        });
     }
 
     /**

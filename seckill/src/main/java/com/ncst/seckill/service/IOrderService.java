@@ -19,4 +19,7 @@ public interface IOrderService {
 
     void deleteOrders();
 
+    long getOrderPayStatus(long uid);
+
+    boolean update(long uid);
 }
