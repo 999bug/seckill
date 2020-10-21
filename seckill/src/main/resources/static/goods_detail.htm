@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html >
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>商品详情</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -23,8 +23,10 @@
 <div class="panel panel-default">
     <div class="panel-heading">秒杀商品详情</div>
     <div class="panel-body">
-        <span id="userTip"> 您还没有登录，请登陆后再操作<br/></span>
-        <span>没有收货地址的提示。。。</span>
+        <span id="userTip"> <br/></span>
+    </div>
+    <div class="panel-body">
+        <span id="addressTip"><br/></span>
     </div>
     <table class="table" id="goodslist">
         <tr>
@@ -45,9 +47,11 @@
             <td>
                 <div class="row">
                     <div class="form-inline">
-                        <img id="verifyCodeImg" width="80" height="32"  style="display:none" onclick="refreshVerifyCode()"/>
-                        <input id="verifyCode"  class="form-control" style="display:none"/>
-                        <button class="btn btn-primary" type="button" id="buyButton"onclick="getMiaoshaPath()">立即秒杀</button>
+                        <img id="verifyCodeImg" width="80" height="32" style="display:none"
+                             onclick="refreshVerifyCode()"/>
+                        <input id="verifyCode" class="form-control" style="display:none"/>
+                        <button class="btn btn-primary" type="button" id="buyButton" onclick="getMiaoshaPath()">立即秒杀
+                        </button>
                     </div>
                 </div>
                 <input type="hidden" name="goodsId" id="goodsId"/>
@@ -66,8 +70,15 @@
             <td colspan="3" id="stockCount"></td>
         </tr>
     </table>
+
+
+    <!--接收前端传的值-->
+    <input type="hidden" id="sk_address">
+    <input type="hidden" id="sk_user">
+    <span type="hidden" id="sk_from_address"></span>
 </div>
 </body>
+
 <script>
 
     //页面入口
@@ -75,9 +86,228 @@
         getDetail();
     });
 
-    function refreshVerifyCode(){
-        $("#verifyCodeImg").attr("src", "/secKill/verifyCode?goodsId="+$("#goodsId").val()+"&timestamp="+new Date().getTime());
+
+    /**
+     * 渲染页面
+     */
+    function getDetail() {
+        var goodsId = g_getQueryString("goodsId");
+        $.ajax({
+            url: "/goods/detail/" + goodsId,
+            type: "GET",
+            success: function (data) {
+                if (data.code == 0) {
+                    render(data.data);
+                } else {
+                    layer.msg(data.msg);
+                }
+            },
+            error: function () {
+                layer.msg("客户端请求有误");
+            }
+        });
     }
+
+    /**
+     * 显示页面
+     * @param detail
+     */
+    function render(detail) {
+        var miaoshaStatus = detail.miaoshaStatus;
+        var remainSeconds = detail.remainSeconds;
+        var goods = detail.goods;
+        var user = detail.user;
+        var address = detail.address;
+
+        if (user) {
+            $("#userTip").text("用户:" + user.nickname);
+        } else {
+            $("#userTip").text("您还没有登录，请登陆后再操作");
+
+        }
+        $("#sk_user").text(user.id);
+        getAddress(user.id);
+
+        if (address) {
+            $("#addressTip").text(address.address);
+        } else {
+            $("#addressTip").text("没有收货地址的提示!!。。。");
+        }
+        // if ($("#sk_from_address").text()==11||address){
+        //     $("#addressTip").hide()
+        // }
+        $("#goodsName").text(goods.goodsName);
+        $("#goodsImg").attr("src", goods.goodsImg);
+        $("#startTime").text(new Date(goods.startDate).format("yyyy-MM-dd hh:mm:ss"));
+        $("#remainSeconds").val(remainSeconds);
+        $("#goodsId").val(goods.id);
+        $("#goodsPrice").text(goods.goodsPrice);
+        $("#miaoshaPrice").text(goods.seckillPrice);
+        $("#stockCount").text(goods.stockCount);
+        countDown();
+    }
+
+    /**
+     * 倒计时功能
+     */
+    function countDown() {
+        var remainSeconds = $("#remainSeconds").val();
+        var timeout;
+        if (remainSeconds > 0) {//秒杀还没开始，倒计时
+            $("#buyButton").attr("disabled", true);
+            timeout = setTimeout(function () {
+                $("#countDown").text(remainSeconds - 1);
+                $("#remainSeconds").val(remainSeconds - 1);
+                countDown();
+            }, 1000);
+        } else if (remainSeconds == 0) {//秒杀进行中
+            $("#buyButton").attr("disabled", false);
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+            $("#miaoshaTip").html("秒杀进行中");
+            $("#verifyCodeImg").attr("src", "/secKill/verifyCode?goodsId=" + $("#goodsId").val());
+            $("#verifyCodeImg").show();
+            $("#verifyCode").show();
+        } else {//秒杀已经结束
+            $("#buyButton").attr("disabled", true);
+            $("#miaoshaTip").html("秒杀已经结束");
+            $("#verifyCodeImg").hide();
+            $("#verifyCode").hide();
+        }
+    }
+
+    /**
+     * 验证码业务
+     */
+    function refreshVerifyCode() {
+        $("#verifyCodeImg").attr("src", "/secKill/verifyCode?goodsId=" + $("#goodsId").val() + "&timestamp=" + new Date().getTime());
+    }
+
+    /*
+    * 获取地址
+    * */
+    function getAddress(id) {
+        $.ajax({
+            url: "/goods/address",
+            type: "GET",
+            data: {
+                id: id
+            },
+            success: function (data) {
+                if (data.data == null) {
+                    $("#sk_address").text(0);
+                }
+            },
+            error: function () {
+                layer.msg("客户端请求有误");
+            }
+        });
+    }
+
+    function disp_confirm() {
+        var user_id = $("#sk_user").text();
+        var statuc_addr = $("#sk_from_address").text();
+        if (!statuc_addr) {
+            var r = confirm("订单地址为空，请输入订单地址");
+            if (r == true) {
+                $.ajax({
+                    url: "/goods/insertAddress?uid=" + user_id,
+                    type: "GET",
+                    success: function (data) {
+                       var add= data.data;
+                        if (data.code == 0) {
+                            $("#sk_from_address").text(true);
+                            $("#addressTip").text(add.address);
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function () {
+                        layer.msg("客户端请求有误");
+                    }
+                })
+            } else {
+                getDetail();
+            }
+        }
+
+    }
+
+    /**
+     * 添加校验是否有收件地址 使用隐藏域
+     */
+    function hasAddress() {
+        var address = $("#sk_address").text();
+        if (address == 0) {
+            disp_confirm();
+        }
+    }
+
+
+    /**
+     * 获得秒杀地址（随机）
+     */
+    function getMiaoshaPath() {
+        hasAddress();
+        var stat = $("#sk_from_address").text();
+
+        if (stat) {
+            var goodsId = $("#goodsId").val();
+            g_showLoading();
+            $.ajax({
+                url: "/secKill/path",
+                type: "GET",
+                data: {
+                    goodsId: goodsId,
+                    verifyCode: $("#verifyCode").val()
+                },
+                success: function (data) {
+                    if (data.code == 0) {
+                        var path = data.data;
+                        doMiaosha(path);
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                },
+                error: function () {
+                    layer.msg("客户端请求有误");
+                }
+            });
+
+        }
+
+    }
+
+    /**
+     * 接收秒杀地址 访问秒杀接口
+     * @param path
+     */
+    function doMiaosha(path) {
+        $.ajax({
+            url: "/secKill/" + path + "/do_secKill",
+            type: "POST",
+            data: {
+                goodsId: $("#goodsId").val(),
+            },
+            success: function (data) {
+                if (data.code == 0) {
+                    getMiaoshaResult($("#goodsId").val());
+                } else {
+                    layer.msg(data.msg);
+                }
+            },
+            error: function () {
+                layer.msg("客户端请求有误");
+            }
+        });
+    }
+
+    /**
+     * 接收秒杀结果 ，判断订单状态，轮询操作
+     * 如果成功跳转订单详情页
+     * @param goodsId
+     */
     function getMiaoshaResult(goodsId) {
         g_showLoading();
         $.ajax({
@@ -114,114 +344,6 @@
         });
     }
 
-    function getMiaoshaPath(){
-        var goodsId = $("#goodsId").val();
-        g_showLoading();
-        $.ajax({
-            url:"/secKill/path",
-            type:"GET",
-            data:{
-                goodsId:goodsId,
-                verifyCode:$("#verifyCode").val()
-            },
-            success:function(data){
-                if(data.code == 0){
-                    var path = data.data;
-                    doMiaosha(path);
-                }else{
-                    layer.msg(data.msg);
-                }
-            },
-            error:function(){
-                layer.msg("客户端请求有误");
-            }
-        });
-    }
-
-    function doMiaosha(path) {
-        $.ajax({
-            url: "/secKill/"+path+"/do_secKill",
-            type: "POST",
-            data: {
-                goodsId: $("#goodsId").val(),
-            },
-            success: function (data) {
-                if (data.code == 0) {
-                    getMiaoshaResult($("#goodsId").val());
-                } else {
-                    layer.msg(data.msg);
-                }
-            },
-            error: function () {
-                layer.msg("客户端请求有误");
-            }
-        });
-
-    }
-
-    function render(detail) {
-        var miaoshaStatus = detail.miaoshaStatus;
-        var remainSeconds = detail.remainSeconds;
-        var goods = detail.goods;
-        var user = detail.user;
-        if (user) {
-            $("#userTip").hide();
-        }
-        $("#goodsName").text(goods.goodsName);
-        $("#goodsImg").attr("src", goods.goodsImg);
-        $("#startTime").text(new Date(goods.startDate).format("yyyy-MM-dd hh:mm:ss"));
-        $("#remainSeconds").val(remainSeconds);
-        $("#goodsId").val(goods.id);
-        $("#goodsPrice").text(goods.goodsPrice);
-        $("#miaoshaPrice").text(goods.seckillPrice);
-        $("#stockCount").text(goods.stockCount);
-        countDown();
-    }
-
-    function countDown() {
-        var remainSeconds = $("#remainSeconds").val();
-        var timeout;
-        if (remainSeconds > 0) {//秒杀还没开始，倒计时
-            $("#buyButton").attr("disabled", true);
-            timeout = setTimeout(function () {
-                $("#countDown").text(remainSeconds - 1);
-                $("#remainSeconds").val(remainSeconds - 1);
-                countDown();
-            }, 1000);
-        } else if (remainSeconds == 0) {//秒杀进行中
-            $("#buyButton").attr("disabled", false);
-            if (timeout) {
-                clearTimeout(timeout);
-            }
-            $("#miaoshaTip").html("秒杀进行中");
-            $("#verifyCodeImg").attr("src", "/secKill/verifyCode?goodsId="+$("#goodsId").val());
-            $("#verifyCodeImg").show();
-            $("#verifyCode").show();
-        } else {//秒杀已经结束
-            $("#buyButton").attr("disabled", true);
-            $("#miaoshaTip").html("秒杀已经结束");
-            $("#verifyCodeImg").hide();
-            $("#verifyCode").hide();
-        }
-    }
-
-    function getDetail() {
-        var goodsId = g_getQueryString("goodsId");
-        $.ajax({
-            url: "/goods/detail/" + goodsId,
-            type: "GET",
-            success: function (data) {
-                if (data.code == 0) {
-                    render(data.data);
-                } else {
-                    layer.msg(data.msg);
-                }
-            },
-            error: function () {
-                layer.msg("客户端请求有误");
-            }
-        });
-    }
 
 </script>
 </html>

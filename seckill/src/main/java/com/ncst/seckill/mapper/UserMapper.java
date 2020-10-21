@@ -2,7 +2,7 @@ package com.ncst.seckill.mapper;
 
 import org.apache.ibatis.annotations.*;
 
-import com.ncst.seckill.pojo.SeckillUser;
+import com.ncst.seckill.pojo.SkUser;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -19,22 +19,22 @@ public interface UserMapper {
 	 * @param id id
 	 * @return user对象
 	 */
-    @Select("select * from seckill_user where id = #{id}")
-    SeckillUser getById(@Param("id") long id);
+    @Select("select * from sk_user where id = #{id}")
+	SkUser getById(@Param("id") long id);
 
 	/**
 	 *  新增用户
-	 * @param seckillUser user 对象
+	 * @param skUser user 对象
 	 */
-	@Insert("insert into seckill_user(id,nickname,password,salt,head,register_date,last_login_date,login_count) " +
+	@Insert("insert into sk_user(id,nickname,password,salt,head,register_date,last_login_date,login_count) " +
             "values(#{id},#{nickname},#{password},#{salt},#{head},#{registerDate},#{lastLoginDate},#{loginCount})")
-    void insertSecKill(SeckillUser seckillUser);
+    void insertSecKill(SkUser skUser);
 
     /**
      * 更新密码
      *
-     * @param seckillUser 秒杀对象
+     * @param skUser 秒杀对象
      */
-    @Update("update seckill_user set password = #{password} where id=#{id}")
-    void updateUser(SeckillUser seckillUser);
+    @Update("update sk_user set password = #{password} where id=#{id}")
+    void updateUser(SkUser skUser);
 }

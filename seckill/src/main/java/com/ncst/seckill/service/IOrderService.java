@@ -1,6 +1,6 @@
 package com.ncst.seckill.service;
 
-import com.ncst.seckill.pojo.SeckillUser;
+import com.ncst.seckill.pojo.SkUser;
 import com.ncst.seckill.pojo.SkOrder;
 import com.ncst.seckill.pojo.SkOrderInfo;
 import com.ncst.seckill.vo.GoodsVo;
@@ -13,7 +13,7 @@ import com.ncst.seckill.vo.GoodsVo;
 public interface IOrderService {
     SkOrder getSecKillOrderByUserIdAndGoodsId(long userId, long goodsId);
 
-    SkOrderInfo insertOrder(SeckillUser seckillUser, GoodsVo goodsVo);
+    SkOrderInfo insertOrder(SkUser skUser, GoodsVo goodsVo);
 
     SkOrderInfo getOrderById(long orderId);
 

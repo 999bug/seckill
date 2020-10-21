@@ -1,5 +1,8 @@
 package com.ncst.seckill.service;
 
+import com.ncst.seckill.pojo.SkAddress;
+import com.ncst.seckill.pojo.SkUser;
+import com.ncst.seckill.vo.AddressVo;
 import com.ncst.seckill.vo.GoodsVo;
 
 import java.util.List;
@@ -20,4 +23,8 @@ public interface IGoodsService {
     boolean reduceStock(GoodsVo goodsVo);
 
     void resetStock(List<GoodsVo> goodsList);
+
+    SkAddress getAddressBySkUserId(long id);
+
+    SkAddress insertAddressByUid(long id);
 }

@@ -7,24 +7,21 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.ncst.seckill.pojo.SeckillUser;
+import com.ncst.seckill.pojo.SkUser;
 
 public class UserUtil {
 
 	private static void createUser(int count) throws Exception{
-		List<SeckillUser> users = new ArrayList<SeckillUser>(count);
+		List<SkUser> users = new ArrayList<SkUser>(count);
 		//生成用户
 		for(int i=0;i<count;i++) {
-			SeckillUser user = new SeckillUser();
+			SkUser user = new SkUser();
 			user.setId(13000000000L+i);
 			user.setLoginCount(1);
 			user.setNickname("user"+i);
@@ -64,7 +61,7 @@ public class UserUtil {
 		file.createNewFile();
 		raf.seek(0);
 		for(int i=0;i<users.size();i++) {
-			SeckillUser user = users.get(i);
+			SkUser user = users.get(i);
 			URL url = new URL(urlString);
 			HttpURLConnection co = (HttpURLConnection)url.openConnection();
 			co.setRequestMethod("POST");

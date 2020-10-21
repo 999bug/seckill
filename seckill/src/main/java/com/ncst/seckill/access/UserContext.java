@@ -1,6 +1,6 @@
 package com.ncst.seckill.access;
 
-import com.ncst.seckill.pojo.SeckillUser;
+import com.ncst.seckill.pojo.SkUser;
 
 /**
  * @Date 2020/10/19 15:07
@@ -8,13 +8,13 @@ import com.ncst.seckill.pojo.SeckillUser;
  * @Description
  */
 public class UserContext {
-    private static ThreadLocal<SeckillUser> userHolder = new ThreadLocal<SeckillUser>();
+    private static ThreadLocal<SkUser> userHolder = new ThreadLocal<SkUser>();
 
-    public static void setUserHolder(SeckillUser user) {
+    public static void setUserHolder(SkUser user) {
         userHolder.set(user);
     }
 
-    public static SeckillUser getUser() {
+    public static SkUser getUser() {
         return userHolder.get();
     }
 

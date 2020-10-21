@@ -1,46 +1,22 @@
 package com.ncst.seckill.vo;
 
 
-import com.ncst.seckill.pojo.SeckillUser;
+import com.ncst.seckill.pojo.SkAddress;
+import com.ncst.seckill.pojo.SkUser;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author hp
  */
+@Getter
+@Setter
 public class GoodsDetailVo {
 	private int miaoshaStatus = 0;
 	private int remainSeconds = 0;
 	private GoodsVo goods ;
-	private SeckillUser user;
+	private SkUser user;
+	private SkAddress address;
 
-	public int getMiaoshaStatus() {
-		return miaoshaStatus;
-	}
 
-	public void setMiaoshaStatus(int miaoshaStatus) {
-		this.miaoshaStatus = miaoshaStatus;
-	}
-
-	public int getRemainSeconds() {
-		return remainSeconds;
-	}
-
-	public void setRemainSeconds(int remainSeconds) {
-		this.remainSeconds = remainSeconds;
-	}
-
-	public GoodsVo getGoods() {
-		return goods;
-	}
-
-	public void setGoods(GoodsVo goods) {
-		this.goods = goods;
-	}
-
-	public SeckillUser getUser() {
-		return user;
-	}
-
-	public void setUser(SeckillUser user) {
-		this.user = user;
-	}
 }

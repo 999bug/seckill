@@ -2,7 +2,7 @@ package com.ncst.seckill.controller;
 
 import com.ncst.seckill.access.AccessLimit;
 import com.ncst.seckill.pojo.SecKillMsg;
-import com.ncst.seckill.pojo.SeckillUser;
+import com.ncst.seckill.pojo.SkUser;
 import com.ncst.seckill.pojo.SkOrder;
 import com.ncst.seckill.key.prefix.GoodsKey;
 import com.ncst.seckill.key.prefix.OrderKey;
@@ -73,16 +73,16 @@ public class SecKillController implements InitializingBean {
 
 
     @PostMapping("/{path}/do_secKill")
-    public Result<Integer> doSecKill( SeckillUser seckillUser,
+    public Result<Integer> doSecKill(SkUser skUser,
                                      @RequestParam("goodsId") long goodsId,
                                      @PathVariable("path") String path) {
         //判断是否登录
-        if (seckillUser == null) {
+        if (skUser == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
         //验证Path
-        boolean check = secKillService.checkPath(seckillUser, goodsId, path);
-        if (!check){
+        boolean check = secKillService.checkPath(skUser, goodsId, path);
+        if (!check) {
             return Result.error(CodeMsg.REQUEST_ILLEGAL);
         }
         //内存标记，减少redis访问  判断是否秒杀
@@ -100,14 +100,14 @@ public class SecKillController implements InitializingBean {
         }
 
         //判断是否已经秒杀到了
-        SkOrder order = orderService.getSecKillOrderByUserIdAndGoodsId(seckillUser.getId(), goodsId);
+        SkOrder order = orderService.getSecKillOrderByUserIdAndGoodsId(skUser.getId(), goodsId);
         if (order != null) {
             return Result.error(CodeMsg.REPEAT_SEC_KILL);
         }
 
         //入队
         SecKillMsg secKillMsg = new SecKillMsg();
-        secKillMsg.setSeckillUser(seckillUser);
+        secKillMsg.setSkUser(skUser);
         secKillMsg.setGoodsId(goodsId);
         senderService.sendSecKill(secKillMsg);
         //排队中
@@ -120,7 +120,7 @@ public class SecKillController implements InitializingBean {
      * 0： 排队中
      */
     @GetMapping("/result")
-    public Result<Long> result( SeckillUser user,
+    public Result<Long> result(SkUser user,
                                @RequestParam("goodsId") long goodsId) {
 
         if (user == null) {
@@ -129,17 +129,18 @@ public class SecKillController implements InitializingBean {
         long result = secKillService.getSecKillResult(user.getId(), goodsId);
         return Result.success(result);
     }
-    @AccessLimit(seconds = 5,maxCount = 5,needLogin = true)
+
+    @AccessLimit(seconds = 5, maxCount = 5, needLogin = true)
     @GetMapping("/path")
-    public Result<String> getPath(SeckillUser user,
+    public Result<String> getPath(SkUser user,
                                   @RequestParam("goodsId") long goodsId,
-                                  @RequestParam(value="verifyCode")int verifyCode) {
+                                  @RequestParam(value = "verifyCode") int verifyCode) {
         if (user == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
         //验证验证码是否正确
         boolean check = secKillService.checkVerifyCode(user, goodsId, verifyCode);
-        if(!check) {
+        if (!check) {
             return Result.error(CodeMsg.REQUEST_ILLEGAL);
         }
 
@@ -148,20 +149,20 @@ public class SecKillController implements InitializingBean {
         return Result.success(path);
     }
 
-    @GetMapping(value="/verifyCode")
-    public Result<String> getMiaoshaVerifyCod(HttpServletResponse response, SeckillUser user,
-                                              @RequestParam("goodsId")long goodsId) {
-        if(user == null) {
+    @GetMapping(value = "/verifyCode")
+    public Result<String> getMiaoshaVerifyCod(HttpServletResponse response, SkUser user,
+                                              @RequestParam("goodsId") long goodsId) {
+        if (user == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
         try {
-            BufferedImage image  = secKillService.createVerifyCode(user, goodsId);
+            BufferedImage image = secKillService.createVerifyCode(user, goodsId);
             OutputStream out = response.getOutputStream();
             ImageIO.write(image, "JPEG", out);
             out.flush();
             out.close();
             return null;
-        }catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return Result.error(CodeMsg.SECKILL_FAIL);
         }

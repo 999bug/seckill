@@ -6,15 +6,15 @@ package com.ncst.seckill.pojo;
  * @Description
  */
 public class SecKillMsg {
-    private SeckillUser seckillUser;
+    private SkUser skUser;
     private long goodsId;
 
-    public SeckillUser getSeckillUser() {
-        return seckillUser;
+    public SkUser getSkUser() {
+        return skUser;
     }
 
-    public void setSeckillUser(SeckillUser seckillUser) {
-        this.seckillUser = seckillUser;
+    public void setSkUser(SkUser skUser) {
+        this.skUser = skUser;
     }
 
     public long getGoodsId() {

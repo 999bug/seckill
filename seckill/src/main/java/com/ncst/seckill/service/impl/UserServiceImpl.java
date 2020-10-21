@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ncst.seckill.mapper.UserMapper;
-import com.ncst.seckill.pojo.SeckillUser;
+import com.ncst.seckill.pojo.SkUser;
 import com.ncst.seckill.exception.GlobalException;
 import com.ncst.seckill.key.prefix.MiaoshaUserKey;
 import com.ncst.seckill.result.CodeMsg;
@@ -38,47 +38,47 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     RedisServiceImpl redisServiceImpl;
 
-    public SeckillUser getById(long id) {
+    public SkUser getById(long id) {
         //取缓存
-        SeckillUser seckillUser = redisServiceImpl.get(MiaoshaUserKey.getById, "" + id, SeckillUser.class);
-        if (seckillUser != null) {
-            return seckillUser;
+        SkUser skUser = redisServiceImpl.get(MiaoshaUserKey.getById, "" + id, SkUser.class);
+        if (skUser != null) {
+            return skUser;
         }
         //取数据库
-        seckillUser = userMapper.getById(id);
-        if (seckillUser != null) {
-            redisServiceImpl.set(MiaoshaUserKey.getById, +id + "", seckillUser);
+        skUser = userMapper.getById(id);
+        if (skUser != null) {
+            redisServiceImpl.set(MiaoshaUserKey.getById, +id + "", skUser);
         }
-        return seckillUser;
+        return skUser;
     }
 
     @Override
     public boolean updatePassword(String token, long id, String password) {
         //取seckillUser
-        SeckillUser user = getById(id);
+        SkUser user = getById(id);
         if (user == null) {
             throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
         }
 
         //更新数据库 新创建一个user 的目的是为了减少数据库的 binlog 文件
-        SeckillUser seckillUser = new SeckillUser();
-        seckillUser.setId(id);
-        seckillUser.setPassword(Md5Utils.inputPassToDbPass(password, user.getSalt()));
-        userMapper.updateUser(seckillUser);
+        SkUser skUser = new SkUser();
+        skUser.setId(id);
+        skUser.setPassword(Md5Utils.inputPassToDbPass(password, user.getSalt()));
+        userMapper.updateUser(skUser);
 
         //更新缓存
         redisServiceImpl.delete(MiaoshaUserKey.getById, "" + id);
-        user.setPassword(seckillUser.getPassword());
+        user.setPassword(skUser.getPassword());
         redisServiceImpl.set(MiaoshaUserKey.token, token, user);
         return true;
     }
 
     @Override
-    public SeckillUser getByToken(HttpServletResponse response, String token) {
+    public SkUser getByToken(HttpServletResponse response, String token) {
         if (StringUtils.isEmpty(token)) {
             return null;
         }
-        SeckillUser user = redisServiceImpl.get(MiaoshaUserKey.token, token, SeckillUser.class);
+        SkUser user = redisServiceImpl.get(MiaoshaUserKey.token, token, SkUser.class);
         //延长有效期
         if (user != null) {
             addCookie(response, token, user);
@@ -93,7 +93,7 @@ public class UserServiceImpl implements IUserService {
 		if (registVo == null) {
 			throw new GlobalException(CodeMsg.REGIST_ERROR);
 		}
-		SeckillUser dbUser = userMapper.getById(registVo.getId());
+		SkUser dbUser = userMapper.getById(registVo.getId());
 
         //防止重复注册
 		if (dbUser != null && registVo.getId()==dbUser.getId()) {
@@ -106,17 +106,17 @@ public class UserServiceImpl implements IUserService {
         String dbPwd = Md5Utils.fromInputPwdToDbPwd(password, salt);
 
         //设置其他值进行数据库
-        SeckillUser seckillUser=new SeckillUser();
-        seckillUser.setId(registVo.getId());
-        seckillUser.setPassword(dbPwd);
-        seckillUser.setSalt(salt);
-        seckillUser.setLoginCount(1);
-        seckillUser.setLastLoginDate(new Date());
-        seckillUser.setRegisterDate(new Date());
-        seckillUser.setHead("nuu");
-        seckillUser.setNickname("nick");
-        System.out.println("=====" + seckillUser + "======");
-        userMapper.insertSecKill(seckillUser);
+        SkUser skUser =new SkUser();
+        skUser.setId(registVo.getId());
+        skUser.setPassword(dbPwd);
+        skUser.setSalt(salt);
+        skUser.setLoginCount(1);
+        skUser.setLastLoginDate(new Date());
+        skUser.setRegisterDate(new Date());
+        skUser.setHead("nuu");
+        skUser.setNickname("nick");
+        System.out.println("=====" + skUser + "======");
+        userMapper.insertSecKill(skUser);
     }
 
     @Override
@@ -127,7 +127,7 @@ public class UserServiceImpl implements IUserService {
         String mobile = loginVo.getMobile();
         String formPass = loginVo.getPassword();
         //判断手机号是否存在
-        SeckillUser user = getById(Long.parseLong(mobile));
+        SkUser user = getById(Long.parseLong(mobile));
         if (user == null) {
             throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
         }
@@ -142,8 +142,8 @@ public class UserServiceImpl implements IUserService {
         //检查redis 是否存在此用户的token
         String token = getUserCookieToken(request);
         if (!StringUtils.isEmpty(token)) {
-            SeckillUser seckillUser = redisServiceImpl.get(MiaoshaUserKey.token, token, SeckillUser.class);
-            if (seckillUser != null && Long.parseLong(loginVo.getMobile()) == seckillUser.getId()) {
+            SkUser skUser = redisServiceImpl.get(MiaoshaUserKey.token, token, SkUser.class);
+            if (skUser != null && Long.parseLong(loginVo.getMobile()) == skUser.getId()) {
                 return token;
             }
         }
@@ -168,7 +168,7 @@ public class UserServiceImpl implements IUserService {
         return null;
     }
 
-    private void addCookie(HttpServletResponse response, String token, SeckillUser user) {
+    private void addCookie(HttpServletResponse response, String token, SkUser user) {
         redisServiceImpl.set(MiaoshaUserKey.token, token, user);
         Cookie cookie = new Cookie(COOKIE_NAME_TOKEN, token);
         cookie.setMaxAge(MiaoshaUserKey.token.expireSeconds());

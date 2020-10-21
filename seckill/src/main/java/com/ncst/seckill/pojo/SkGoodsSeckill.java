@@ -1,6 +1,7 @@
 package com.ncst.seckill.pojo;
 
 
+import javax.persistence.Table;
 import java.util.Date;
 
 public class SkGoodsSeckill {

@@ -1,9 +1,10 @@
 package com.ncst.seckill.pojo;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SkUser {
+public class SkUser implements Serializable {
 
   private long id;
   private String nickname;
@@ -12,8 +13,7 @@ public class SkUser {
   private String head;
   private Date registerDate;
   private Date lastLoginDate;
-  private long loginCount;
-
+  private int loginCount;
 
   public long getId() {
     return id;
@@ -71,11 +71,25 @@ public class SkUser {
     this.lastLoginDate = lastLoginDate;
   }
 
-  public long getLoginCount() {
+  public int getLoginCount() {
     return loginCount;
   }
 
-  public void setLoginCount(long loginCount) {
+  public void setLoginCount(int loginCount) {
     this.loginCount = loginCount;
+  }
+
+  @Override
+  public String toString() {
+    return "SeckillUser{" +
+            "id=" + id +
+            ", nickname='" + nickname + '\'' +
+            ", password='" + password + '\'' +
+            ", salt='" + salt + '\'' +
+            ", head='" + head + '\'' +
+            ", registerDate=" + registerDate +
+            ", lastLoginDate=" + lastLoginDate +
+            ", loginCount=" + loginCount +
+            '}';
   }
 }

@@ -1,7 +1,8 @@
 package com.ncst.seckill.controller;
 
 
-import com.ncst.seckill.pojo.SeckillUser;
+import com.ncst.seckill.pojo.SkAddress;
+import com.ncst.seckill.pojo.SkUser;
 import com.ncst.seckill.pojo.SkOrderInfo;
 import com.ncst.seckill.result.CodeMsg;
 import com.ncst.seckill.result.Result;
@@ -24,20 +25,28 @@ public class OrderController {
 	IGoodsService goodsService;
 	
     @GetMapping("/detail")
-    public Result<OrderDetailVo> info( SeckillUser user,
+    public Result<OrderDetailVo> info( SkUser user,
 									  @RequestParam("orderId") long orderId) {
     	if(user == null) {
     		return Result.error(CodeMsg.SESSION_ERROR);
     	}
+
+    	//获取订单详情
 		SkOrderInfo order = orderService.getOrderById(orderId);
 		if(order == null) {
     		return Result.error(CodeMsg.ORDER_NOT_EXIST);
     	}
-    	long goodsId = order.getGoodsId();
-		GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);
+
+		//获取商品详情
+		GoodsVo goods = goodsService.getGoodsVoByGoodsId(order.getGoodsId());
+
+		//获取收件人地址 姓名
+		SkAddress address = goodsService.getAddressBySkUserId(order.getUserId());
+
 		OrderDetailVo vo = new OrderDetailVo();
     	vo.setOrder(order);
     	vo.setGoods(goods);
+    	vo.setAddress(address);
     	return Result.success(vo);
     }
     

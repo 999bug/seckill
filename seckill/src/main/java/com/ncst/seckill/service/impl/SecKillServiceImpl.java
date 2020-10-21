@@ -1,6 +1,6 @@
 package com.ncst.seckill.service.impl;
 
-import com.ncst.seckill.pojo.SeckillUser;
+import com.ncst.seckill.pojo.SkUser;
 import com.ncst.seckill.pojo.SkOrder;
 import com.ncst.seckill.pojo.SkOrderInfo;
 import com.ncst.seckill.pojo.Verify;
@@ -39,12 +39,12 @@ public class SecKillServiceImpl implements ISecKillService {
 
     @Override
     @Transactional()
-    public SkOrderInfo secKill(SeckillUser seckillUser, GoodsVo goodsVo) {
+    public SkOrderInfo secKill(SkUser skUser, GoodsVo goodsVo) {
         //判断减库存是否成功
         boolean stock = goodsService.reduceStock(goodsVo);
         if (stock) {
             //成功 写入秒杀订单
-            return orderService.insertOrder(seckillUser, goodsVo);
+            return orderService.insertOrder(skUser, goodsVo);
         } else {
             //不成功 库存为 0
             setGoodsEmpty(goodsVo.getId());
@@ -78,7 +78,7 @@ public class SecKillServiceImpl implements ISecKillService {
     }
 
     @Override
-    public String creatPath(SeckillUser user, long goodsId) {
+    public String creatPath(SkUser user, long goodsId) {
         if (user == null || goodsId <= 0) {
             return null;
         }
@@ -88,16 +88,16 @@ public class SecKillServiceImpl implements ISecKillService {
     }
 
     @Override
-    public boolean checkPath(SeckillUser seckillUser, long goodsId, String path) {
-        if (seckillUser == null || path == null) {
+    public boolean checkPath(SkUser skUser, long goodsId, String path) {
+        if (skUser == null || path == null) {
             return false;
         }
-        String oldPath = redisService.get(SecKillKey.getSecKillPath, "" + seckillUser.getId() + "_" + goodsId, String.class);
+        String oldPath = redisService.get(SecKillKey.getSecKillPath, "" + skUser.getId() + "_" + goodsId, String.class);
         return path.equals(oldPath);
     }
 
     @Override
-    public BufferedImage createVerifyCode(SeckillUser user, long goodsId) {
+    public BufferedImage createVerifyCode(SkUser user, long goodsId) {
         Verify verifyCode = VerifyUtils.createVerifyCode(user, goodsId);
         //把验证码存入缓存
         redisService.set(SecKillKey.getMiaoshaVerifyCode, user.getId() + "," + goodsId, verifyCode.getCalc());
@@ -105,7 +105,7 @@ public class SecKillServiceImpl implements ISecKillService {
     }
 
     @Override
-    public boolean checkVerifyCode(SeckillUser user, long goodsId, int verifyCode) {
+    public boolean checkVerifyCode(SkUser user, long goodsId, int verifyCode) {
         if (user == null || goodsId <= 0) {
             return false;
         }

@@ -2,7 +2,7 @@ package com.ncst.seckill.service.impl;
 
 import com.ncst.seckill.config.MqConfig;
 import com.ncst.seckill.pojo.SecKillMsg;
-import com.ncst.seckill.pojo.SeckillUser;
+import com.ncst.seckill.pojo.SkUser;
 import com.ncst.seckill.pojo.SkOrder;
 import com.ncst.seckill.service.IGoodsService;
 import com.ncst.seckill.service.IMqReceiverService;
@@ -44,7 +44,7 @@ public class MqReceiverServiceImpl implements IMqReceiverService {
         log.info("receive message:" + message);
         SecKillMsg secKillMsg = JsonUtils.stringToBean(message, SecKillMsg.class);
 
-        SeckillUser user = secKillMsg.getSeckillUser();
+        SkUser user = secKillMsg.getSkUser();
         long goodsId = secKillMsg.getGoodsId();
 
         GoodsVo goodsVo = goodsService.getGoodsVoByGoodsId(goodsId);

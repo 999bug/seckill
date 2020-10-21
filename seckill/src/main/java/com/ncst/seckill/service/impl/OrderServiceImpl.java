@@ -1,7 +1,9 @@
 package com.ncst.seckill.service.impl;
 
+import com.ncst.seckill.mapper.AddressMapper;
 import com.ncst.seckill.mapper.OrderMapper;
-import com.ncst.seckill.pojo.SeckillUser;
+import com.ncst.seckill.pojo.SkAddress;
+import com.ncst.seckill.pojo.SkUser;
 import com.ncst.seckill.pojo.SkOrder;
 import com.ncst.seckill.pojo.SkOrderInfo;
 import com.ncst.seckill.key.prefix.OrderKey;
@@ -24,7 +26,11 @@ public class OrderServiceImpl implements IOrderService {
     private OrderMapper orderMapper;
 
     @Autowired
+    private AddressMapper addressMapper;
+
+    @Autowired
     private IRedisService redisService;
+
 
     @Override
     public SkOrder getSecKillOrderByUserIdAndGoodsId(long userId, long goodsId) {
@@ -34,7 +40,10 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public SkOrderInfo insertOrder(SeckillUser seckillUser, GoodsVo goodsVo) {
+    public SkOrderInfo insertOrder(SkUser skUser, GoodsVo goodsVo) {
+        //创建地址对象，写入订单详情时 ，写入地址的id
+        SkAddress address = addressMapper.getAddressByUid(skUser.getId());
+
         //写入订单详细信息
         SkOrderInfo orderInfo = new SkOrderInfo();
         orderInfo.setCreateDate(new Date());
@@ -45,19 +54,20 @@ public class OrderServiceImpl implements IOrderService {
         orderInfo.setGoodsPrice(goodsVo.getSeckillPrice());
         orderInfo.setOrderChannel(1);
         orderInfo.setStatus(0);
-        orderInfo.setUserId(seckillUser.getId());
+        orderInfo.setUserId(skUser.getId());
+        orderInfo.setDeliveryAddrId(address.getAid());
         orderMapper.insertOrderInfo(orderInfo);
 
         //写入秒杀订单信息
         SkOrder skOrder = new SkOrder();
         skOrder.setGoodsId(goodsVo.getId());
         skOrder.setOrderId(orderInfo.getId());
-        skOrder.setUserId(seckillUser.getId());
+        skOrder.setUserId(skUser.getId());
 
         orderMapper.insert(skOrder);
         //添加缓存层，提高访问效率
         redisService.set(OrderKey.getSecKillaOrderByUidGid,
-                "" + seckillUser.getId() + "_" + goodsVo.getId(), skOrder);
+                "" + skUser.getId() + "_" + goodsVo.getId(), skOrder);
         return orderInfo;
     }
 

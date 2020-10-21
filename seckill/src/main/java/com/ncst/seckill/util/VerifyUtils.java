@@ -1,6 +1,6 @@
 package com.ncst.seckill.util;
 
-import com.ncst.seckill.pojo.SeckillUser;
+import com.ncst.seckill.pojo.SkUser;
 import com.ncst.seckill.pojo.Verify;
 
 import javax.script.ScriptEngine;
@@ -17,7 +17,7 @@ import java.util.Random;
 public class VerifyUtils {
 
 
-    public static Verify createVerifyCode(SeckillUser user, long goodsId) {
+    public static Verify createVerifyCode(SkUser user, long goodsId) {
         if (user == null || goodsId <= 0) {
             return null;
         }

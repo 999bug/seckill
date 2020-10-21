@@ -2,7 +2,7 @@ package com.ncst.seckill.access;
 
 import com.alibaba.fastjson.JSON;
 import com.ncst.seckill.key.prefix.AccessKey;
-import com.ncst.seckill.pojo.SeckillUser;
+import com.ncst.seckill.pojo.SkUser;
 import com.ncst.seckill.result.CodeMsg;
 import com.ncst.seckill.result.Result;
 import com.ncst.seckill.service.IRedisService;
@@ -37,7 +37,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler instanceof HandlerMethod) {
-            SeckillUser user = getUser(request, response);
+            SkUser user = getUser(request, response);
             UserContext.setUserHolder(user);
             HandlerMethod hm = (HandlerMethod) handler;
             AccessLimit accessLimit = hm.getMethodAnnotation(AccessLimit.class);
@@ -86,7 +86,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         out.close();
     }
 
-    private SeckillUser getUser(HttpServletRequest request, HttpServletResponse response) {
+    private SkUser getUser(HttpServletRequest request, HttpServletResponse response) {
         String paramToken = request.getParameter(UserServiceImpl.COOKIE_NAME_TOKEN);
         String cookieToken = getCookieValue(request);
         if (StringUtils.isEmpty(cookieToken) && StringUtils.isEmpty(paramToken)) {

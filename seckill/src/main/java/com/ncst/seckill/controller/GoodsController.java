@@ -1,10 +1,12 @@
 package com.ncst.seckill.controller;
 
-import com.ncst.seckill.pojo.SeckillUser;
+import com.ncst.seckill.pojo.SkAddress;
+import com.ncst.seckill.pojo.SkUser;
 import com.ncst.seckill.key.prefix.GoodsKey;
 import com.ncst.seckill.result.Result;
 import com.ncst.seckill.service.IGoodsService;
 import com.ncst.seckill.service.impl.RedisServiceImpl;
+import com.ncst.seckill.vo.AddressVo;
 import com.ncst.seckill.vo.GoodsDetailVo;
 import com.ncst.seckill.vo.GoodsVo;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +19,7 @@ import com.ncst.seckill.service.impl.UserServiceImpl;
 import org.thymeleaf.spring4.context.SpringWebContext;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 
+import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -54,7 +57,7 @@ public class GoodsController {
 
     @GetMapping(value = "/to_list", produces = "text/html")
     public String list(HttpServletRequest request, HttpServletResponse response,
-                       Model model, SeckillUser user) {
+                       Model model, SkUser user) {
         model.addAttribute("user", user);
         //取缓存
         String html = redisServiceImpl.get(GoodsKey.getGoodsList, "", String.class);
@@ -74,15 +77,24 @@ public class GoodsController {
     }
 
     @GetMapping("/detail/{goodsId}")
-    public Result<GoodsDetailVo> detail(SeckillUser seckillUser, @PathVariable("goodsId") long goodsId) {
+    public Result<GoodsDetailVo> detail(Model model,
+                                        SkUser skUser, @PathVariable("goodsId") long goodsId) {
         GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);
         int[] arr = goodsService.getSeckillStatusAndRemainSeconds(goods);
 
+        SkAddress skAddress = goodsService.getAddressBySkUserId(skUser.getId());
+        if (skAddress!=null){
+            model.addAttribute("sk_address", skAddress.getAddress());
+        }else {
+            model.addAttribute("sk_address", 0);
+        }
         GoodsDetailVo detailVo = new GoodsDetailVo();
         detailVo.setMiaoshaStatus(arr[0]);
         detailVo.setRemainSeconds(arr[1]);
         detailVo.setGoods(goods);
-        detailVo.setUser(seckillUser);
+        detailVo.setUser(skUser);
+        detailVo.setAddress(skAddress);
+        System.out.println(skAddress);
         return Result.success(detailVo);
     }
 
@@ -110,5 +122,19 @@ public class GoodsController {
         }
         return html;
     }
+
+    @RequestMapping(value = "/insertAddress")
+    public Result<SkAddress> insertAddress(@RequestParam("uid")long uid) {
+        SkAddress skAddress = goodsService.insertAddressByUid(uid);
+        return Result.success(skAddress);
+    }
+
+    @GetMapping(value = "/address")
+    public Result<SkAddress> getAddress(long id) {
+        SkAddress skAddress = goodsService.getAddressBySkUserId(id);
+        return Result.success(skAddress);
+    }
+
+
 
 }

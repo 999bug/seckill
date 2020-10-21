@@ -1,14 +1,15 @@
 package com.ncst.seckill.service.impl;
 
+import com.ncst.seckill.mapper.AddressMapper;
 import com.ncst.seckill.mapper.GoodsMapper;
-import com.ncst.seckill.pojo.SeckillUser;
-import com.ncst.seckill.pojo.SkGoods;
+import com.ncst.seckill.pojo.SkAddress;
 import com.ncst.seckill.pojo.SkGoodsSeckill;
 import com.ncst.seckill.service.IGoodsService;
 import com.ncst.seckill.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +22,9 @@ public class GoodsServiceImpl implements IGoodsService {
 
     @Autowired
     private GoodsMapper goodsMapper;
+
+    @Autowired
+    private AddressMapper addressMapper;
 
     @Override
     public List<GoodsVo> listGoodsVo() {
@@ -69,12 +73,32 @@ public class GoodsServiceImpl implements IGoodsService {
 
     @Override
     public void resetStock(List<GoodsVo> goodsList) {
-        for(GoodsVo goods : goodsList ) {
-             SkGoodsSeckill g = new SkGoodsSeckill();
+        for (GoodsVo goods : goodsList) {
+            SkGoodsSeckill g = new SkGoodsSeckill();
             g.setGoodsId(goods.getId());
             g.setStockCount(goods.getStockCount());
             goodsMapper.resetStock(g);
         }
+    }
+
+    @Override
+    public SkAddress getAddressBySkUserId(long id) {
+       return addressMapper.getAddressByUid( id);
+    }
+
+    @Override
+    public SkAddress insertAddressByUid(long id) {
+
+        SkAddress skAddress = new SkAddress();
+        skAddress.setUid(id);
+        skAddress.setAddress("河北省承德市双滦区");
+        skAddress.setCreatedTime(new Date());
+        skAddress.setModifiedTime(new Date());
+        skAddress.setPhone(id);
+        skAddress.setNickname("李四");
+        addressMapper.insert(skAddress);
+
+        return skAddress;
     }
 
 }
