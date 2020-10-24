@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Author by LSY
  * @Description
  */
-
 @SpringBootApplication
 public class MainApplication  {
 	public static void main(String[] args) {

@@ -1,6 +1,8 @@
 package com.ncst.seckill.vo;
 
 import com.ncst.seckill.pojo.SkGoods;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
@@ -9,43 +11,14 @@ import java.util.Date;
  * @Author by LSY
  * @Description
  */
+@Getter
+@Setter
 public class GoodsVo extends SkGoods {
     private Double seckillPrice;
     private int stockCount;
     private Date startDate;
     private Date endDate;
-
-    public Double getSeckillPrice() {
-        return seckillPrice;
-    }
-
-    public void setSeckillPrice(Double seckillPrice) {
-        this.seckillPrice = seckillPrice;
-    }
-
-    public int getStockCount() {
-        return stockCount;
-    }
-
-    public void setStockCount(int stockCount) {
-        this.stockCount = stockCount;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
+    private int version;
 
     @Override
     public String toString() {

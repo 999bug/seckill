@@ -9,6 +9,7 @@ import com.ncst.seckill.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.DefaultFormatterFactory;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,11 @@ import java.util.List;
  */
 @Service
 public class GoodsServiceImpl implements IGoodsService {
+
+    /**
+     * 乐观锁冲突最大重试次数
+     */
+    private static final int DEFAULT_MAX_RETRIES = 5;
 
     @Autowired
     private GoodsMapper goodsMapper;
@@ -64,11 +70,37 @@ public class GoodsServiceImpl implements IGoodsService {
         return arr;
     }
 
+    /**
+     * 使用版本号 和stock——count > 0 实现 乐观锁 实现减少库存 ，防止库存为负数的情况
+     *
+     * @param goodsVo 商品Vo
+     * @return 是否更新成功
+     */
     @Override
     public boolean reduceStock(GoodsVo goodsVo) {
+
+        //尝试次数
+        int attempts = 0;
+        //查询数据库返回的结果
+        int ret = 0;
         SkGoodsSeckill goods = new SkGoodsSeckill();
         goods.setGoodsId(goodsVo.getId());
-        return goodsMapper.reduceStock(goods) > 0;
+        goods.setVersion(goodsVo.getVersion());
+        do {
+            attempts++;
+            try {
+                goods.setVersion(goodsMapper.getVersionByGoodsId(goodsVo.getId()));
+                ret = goodsMapper.reduceStockByVersion(goods);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            //减库存成功
+            if (ret != 0) {
+                break;
+            }
+        } while (attempts < DEFAULT_MAX_RETRIES);
+        return ret > 0;
     }
 
     @Override
@@ -83,7 +115,7 @@ public class GoodsServiceImpl implements IGoodsService {
 
     @Override
     public SkAddress getAddressBySkUserId(long id) {
-       return addressMapper.getAddressByUid( id);
+        return addressMapper.getAddressByUid(id);
     }
 
     @Override

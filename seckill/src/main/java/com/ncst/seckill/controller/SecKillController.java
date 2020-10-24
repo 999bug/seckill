@@ -1,5 +1,6 @@
 package com.ncst.seckill.controller;
 
+import com.google.common.util.concurrent.RateLimiter;
 import com.ncst.seckill.access.AccessLimit;
 import com.ncst.seckill.pojo.SecKillMsg;
 import com.ncst.seckill.pojo.SkUser;
@@ -22,6 +23,7 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Date 2020/10/14 19:48
@@ -47,6 +49,9 @@ public class SecKillController implements InitializingBean {
     private IMqSenderService senderService;
 
     private Map<Long, Boolean> map = new HashMap<Long, Boolean>();
+
+
+    private RateLimiter rateLimiter=RateLimiter.create(10);
 
     /**
      * 系统初始化
@@ -80,6 +85,12 @@ public class SecKillController implements InitializingBean {
         if (skUser == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
+
+        //令牌桶算法 限流
+        if (!rateLimiter.tryAcquire(1000, TimeUnit.MILLISECONDS)){
+            return Result.error(CodeMsg.ACCESS_LIMIT_REACHED);
+        }
+
         //验证Path
         boolean check = secKillService.checkPath(skUser, goodsId, path);
         if (!check) {
